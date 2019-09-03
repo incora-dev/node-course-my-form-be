@@ -16,11 +16,19 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserRole } from './user-role.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 @UseGuards(AuthGuard('jwt'))
 export class UsersController {
     constructor(private usersService: UsersService) {}
+
+    @Post('/')
+    @Roles(UserRole.ADMIN)
+    @UseGuards(RolesGuard)
+    createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+        return this.usersService.createUser(createUserDto);
+    }
 
     @Get()
     async getUsers(): Promise<User[]> {
