@@ -9,6 +9,8 @@
 Form builder project builds on [Nest](https://github.com/nestjs/nest) framework, [TypeScript](https://github.com/microsoft/TypeScript) and [PostgreSQL](https://github.com/postgres/postgres).
 
 ## Installation
+Before project installation need to install [PostgreSQL](https://www.postgresql.org/download/). <br>
+After PostgreSQL installation go to pgAdmin and create a new database (for example "form_builder") and then edit file "src/config/typeorm.config.ts" namely the line "database" to your database name which you just created.
 
 ```bash
 $ npm install
