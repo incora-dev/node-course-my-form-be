@@ -8,7 +8,7 @@ export class GetUserDto {
 
     @IsOptional()
     @IsString()
-    username?: string;
+    email?: string;
 
     @IsOptional()
     @IsEnum(UserRole)

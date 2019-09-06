@@ -1,11 +1,17 @@
-import { IsString, MinLength, MaxLength, Matches, IsEnum } from 'class-validator';
+import {
+    IsString,
+    MinLength,
+    MaxLength,
+    Matches,
+    IsEnum,
+    IsOptional,
+    IsEmail,
+} from 'class-validator';
 import { UserRole } from '../user-role.enum';
 
 export class CreateUserDto {
-    @IsString()
-    @MinLength(4)
-    @MaxLength(20)
-    username: string;
+    @IsEmail()
+    email: string;
 
     @IsString()
     @MinLength(8)
@@ -14,6 +20,33 @@ export class CreateUserDto {
         message: 'Password to weak',
     })
     password: string;
+
+    @IsString()
+    firstName: string;
+
+    @IsOptional()
+    @IsString()
+    lastName?: string;
+
+    @IsOptional()
+    @IsString()
+    address?: string;
+
+    @IsOptional()
+    @IsString()
+    country?: string;
+
+    @IsOptional()
+    @IsString()
+    city?: string;
+
+    @IsOptional()
+    @IsString()
+    postalCode?: string;
+
+    @IsOptional()
+    @IsString()
+    aboutMe?: string;
 
     @IsEnum(UserRole)
     role: string;
