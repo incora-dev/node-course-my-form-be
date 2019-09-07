@@ -70,6 +70,11 @@ export class UsersController {
     }
 
     @Delete('/:id')
+    @ApiImplicitParam({ name: 'id', type: Number })
+    @ApiOkResponse({ description: 'The user has been successfully deleted.' })
+    @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+    @ApiForbiddenResponse({ description: 'Forbidden.' })
+    @ApiNotFoundResponse({ description: 'Not found.' })
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
     async deleteUser(@Param('id') id: number): Promise<void> {
