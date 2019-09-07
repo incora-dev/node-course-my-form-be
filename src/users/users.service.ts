@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
@@ -34,13 +34,7 @@ export class UsersService {
     }
 
     async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-        const isUpdated = await this.userRepository.update({ id }, updateUserDto);
-
-        if (!isUpdated) {
-            throw new InternalServerErrorException('User not updated');
-        }
-
-        return await this.userRepository.findOne(id);
+        return this.userRepository.updateUser(id, updateUserDto);
     }
 
     async deleteUser(id: number): Promise<void> {
@@ -52,18 +46,18 @@ export class UsersService {
     }
 
     async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<string> {
-        const { username, password } = authCredentialsDto;
+        const { email, password } = authCredentialsDto;
 
         const user = await this.userRepository
             .createQueryBuilder()
             .select('user')
             .addSelect('user.password')
             .from(User, 'user')
-            .where('user.username = :username', { username })
+            .where('user.email = :email', { email })
             .getOne();
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            return user.username;
+            return user.email;
         } else {
             return null;
         }
