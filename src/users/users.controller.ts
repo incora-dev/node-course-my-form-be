@@ -16,6 +16,7 @@ import {
     ApiForbiddenResponse,
     ApiOkResponse,
     ApiImplicitParam,
+    ApiNotFoundResponse,
 } from '@nestjs/swagger';
 
 @ApiUseTags('users')
@@ -50,11 +51,18 @@ export class UsersController {
     @ApiImplicitParam({ name: 'id', type: Number })
     @ApiOkResponse({ description: 'The user has been successfully selected.', type: User })
     @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+    @ApiNotFoundResponse({ description: 'Not found.' })
     async getUserById(@Param('id') id: number): Promise<User> {
         return await this.usersService.getUserByParams({ id });
     }
 
     @Put('/:id')
+    @ApiImplicitParam({ name: 'id', type: Number })
+    @ApiOkResponse({ description: 'The user has been successfully updated.', type: User })
+    @ApiBadRequestResponse({ description: 'Bad request.' })
+    @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+    @ApiForbiddenResponse({ description: 'Forbidden.' })
+    @ApiNotFoundResponse({ description: 'Not found.' })
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
     async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto): Promise<User> {
