@@ -12,8 +12,8 @@ Form builder project builds on [Nest](https://github.com/nestjs/nest) framework,
 Before project installation need to install [PostgreSQL](https://www.postgresql.org/download/). <br>
 After PostgreSQL installation go to pgAdmin and create a new database (for example "form_builder") and then edit configuration database file "src/config/typeorm.config.ts":
   - "username" should be the username for your database ("postgres" by default)
-  - "password" should be the password for your database ("password" by default)
-  - "database" should be your database name which you just created
+  - "password" should be the password for your database ("postgres" by default)
+  - "database" should be your database name which you just created ("form_builder" by default)
 
 Then you can run the command:
 ```bash
