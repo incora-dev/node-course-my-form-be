@@ -14,6 +14,7 @@ import {
     ApiUnauthorizedResponse,
     ApiBadRequestResponse,
     ApiForbiddenResponse,
+    ApiOkResponse,
 } from '@nestjs/swagger';
 
 @ApiUseTags('users')
@@ -38,6 +39,8 @@ export class UsersController {
     }
 
     @Get()
+    @ApiOkResponse({ description: 'The users have been successfully selected.', type: [User] })
+    @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
     async getUsers(): Promise<User[]> {
         return await this.usersService.getAllUsers();
     }
