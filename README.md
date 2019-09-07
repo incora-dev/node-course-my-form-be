@@ -10,8 +10,12 @@ Form builder project builds on [Nest](https://github.com/nestjs/nest) framework,
 
 ## Installation
 Before project installation need to install [PostgreSQL](https://www.postgresql.org/download/). <br>
-After PostgreSQL installation go to pgAdmin and create a new database (for example "form_builder") and then edit file "src/config/typeorm.config.ts" namely the line "database" to your database name which you just created.
+After PostgreSQL installation go to pgAdmin and create a new database (for example "form_builder") and then edit configuration database file "src/config/typeorm.config.ts":
+  - "username" should be the username for your database ("postgres" by default)
+  - "password" should be the password for your database ("password" by default)
+  - "database" should be your database name which you just created
 
+Then you can run the command:
 ```bash
 $ npm install
 ```
@@ -41,3 +45,7 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Documentation
+While the application is running, open your browser and navigate to http://localhost:3000/api. You should see the API documentation.
+If you want to download the corresponding Swagger JSON file, you can simply call http://localhost:3000/api-json in your browser.
