@@ -1,7 +1,6 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { UserRole } from './user-role.enum';
 import { IsEnum } from 'class-validator';
-import { Form } from '../forms/form.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -38,7 +37,4 @@ export class User extends BaseEntity {
     @Column({ type: 'varchar', nullable: false })
     @IsEnum(UserRole)
     role: string;
-
-    @OneToMany(type => Form, form => form.owner)
-    forms: Array<Form>
 }
