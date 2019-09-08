@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, ForbiddenException, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '../users/user-role.enum';
 import { RolesGuard } from '../guards/roles.guard';
@@ -15,8 +15,15 @@ export class FormsController {
     @Get('/:id')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    getOne(@Param('id') id: number): Promise<Form> {
-        return this.formsService.getOne(id);
+    async getOne(@Param('id') id: number, @Req() request): Promise<Form> {
+
+        const form = await this.formsService.getOne(id);
+
+        if (request.user.id !== form.owner.id) {
+            throw new ForbiddenException();
+        }
+
+        return form;
     }
 
 }
