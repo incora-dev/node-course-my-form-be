@@ -6,11 +6,11 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class FormsService {
     constructor(@InjectRepository(Form)
-                private readonly formRepository: Repository<Form>
+                private readonly formRepository: Repository<Form>,
     ) {}
 
-    async getAll(): Promise<Array<Form>> {
-        return await this.formRepository.find({relations: ["owner"]});
+    async getAll(): Promise<Form[]> {
+        return await this.formRepository.find({relations: ['owner']});
     }
 
 }

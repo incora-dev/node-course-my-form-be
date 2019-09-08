@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { Roles } from "../decorators/roles.decorator";
-import { UserRole } from "../users/user-role.enum";
-import { RolesGuard } from "../guards/roles.guard";
+import { Roles } from '../decorators/roles.decorator';
+import { UserRole } from '../users/user-role.enum';
+import { RolesGuard } from '../guards/roles.guard';
 import { Form } from './form.entity';
 import { FormsService } from './forms.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -15,7 +15,7 @@ export class FormsController {
     @Get('')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    getAll(): Promise<Array<Form>> {
+    getAll(): Promise<Form[]> {
         return this.formsService.getAll();
     }
 
