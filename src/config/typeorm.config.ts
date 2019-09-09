@@ -11,3 +11,15 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     synchronize: true,
     keepConnectionAlive: true,
 };
+
+export const typeOrmConfigTest: TypeOrmModuleOptions = {
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: 'postgres',
+    database: 'form_builder_test',
+    entities: [__dirname + '/../**/*.entity.{js,ts}'],
+    synchronize: true,
+    keepConnectionAlive: true,
+};
