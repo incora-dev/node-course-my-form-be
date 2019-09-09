@@ -6,13 +6,10 @@ import { UsersController } from '../src/users/users.controller';
 import { UsersService } from '../src/users/users.service';
 import { AuthModule } from '../src/auth/auth.module';
 import { User } from '../src/users/user.entity';
-import { users } from './seeds/users.seed';
+import { usersSeed } from './seeds/users.seed';
 import { Connection, Repository } from 'typeorm';
 import * as request from 'supertest';
 import { clearDB } from './test-utils';
-
-// TODO
-// .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
 
 describe('AuthController (e2e)', () => {
     let app: INestApplication;
@@ -21,8 +18,8 @@ describe('AuthController (e2e)', () => {
     let usersService: UsersService;
     let userRepository: Repository<User>;
 
-    const adminUser = users[0];
-    // const simpleUser = users[1];
+    const adminUser = usersSeed[0];
+    // const simpleUser = usersSeed[1];
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
