@@ -1,4 +1,4 @@
-const users = [
+const usersSeed = [
     {
         email: 'testAdmin@gmail.com',
         password: '111111Qq',
@@ -25,4 +25,4 @@ const users = [
     },
 ];
 
-export { users };
+export { usersSeed };
