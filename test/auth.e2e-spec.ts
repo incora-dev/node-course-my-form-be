@@ -1,41 +1,28 @@
-import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { INestApplication, HttpServer } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { typeOrmConfigTest } from '../src/config/typeorm.config';
-import { UsersController } from '../src/users/users.controller';
-import { UsersService } from '../src/users/users.service';
 import { AuthModule } from '../src/auth/auth.module';
-import { User } from '../src/users/user.entity';
 import { usersSeed } from './seeds/users.seed';
-import { Connection, Repository } from 'typeorm';
+import { Connection } from 'typeorm';
 import * as request from 'supertest';
-import { clearDB } from './test-utils';
+import { E2eTestUtils } from './test-utils';
 
 describe('AuthController (e2e)', () => {
     let app: INestApplication;
     let connection: Connection;
     let httpServer: HttpServer;
-    let usersService: UsersService;
-    let userRepository: Repository<User>;
 
-    const adminUser = usersSeed[0];
-    const simpleUser = usersSeed[1];
+    const adminUser = usersSeed.admins[0];
+    const simpleUser = usersSeed.users[0];
 
-    beforeAll(async () => {
+    // jest.setup.js
+    jest.setTimeout(10000)
+
+    beforeAll(async done => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [
-                UsersService,
-                {
-                    provide: getRepositoryToken(User),
-                    useClass: Repository,
-                },
-            ],
-            controllers: [UsersController],
             imports: [TypeOrmModule.forRoot(typeOrmConfigTest), AuthModule],
         }).compile();
-
-        usersService = module.get<UsersService>(UsersService);
-        userRepository = module.get<Repository<User>>(getRepositoryToken(User));
 
         app = module.createNestApplication();
         await app.init();
@@ -44,7 +31,9 @@ describe('AuthController (e2e)', () => {
         connection = app.get(Connection);
 
         // clear database before start
-        clearDB(connection);
+        await E2eTestUtils.clearDB(connection);
+
+        done();
     });
 
     describe(`POST /auth/signup`, () => {
@@ -54,20 +43,7 @@ describe('AuthController (e2e)', () => {
                 .send(adminUser)
                 .expect(201);
 
-            const newUser = response.body;
-
-            expect(newUser.email).toBe(adminUser.email);
-            expect(newUser.firstName).toBe(adminUser.firstName);
-            expect(newUser.lastName).toBe(adminUser.lastName);
-            expect(newUser.address).toBe(adminUser.address);
-            expect(newUser.country).toBe(adminUser.country);
-            expect(newUser.city).toBe(adminUser.city);
-            expect(newUser.postalCode).toBe(adminUser.postalCode);
-            expect(newUser.aboutMe).toBe(adminUser.aboutMe);
-            expect(newUser.role).toBe(adminUser.role);
-
-            const createdUser = await usersService.getUserByParams({ id: newUser.id });
-            expect(newUser.email).toBe(createdUser.email);
+            expect(response.body.email).toBeDefined();
         });
 
         it('Should reject duplicate registration', async () => {
@@ -121,7 +97,7 @@ describe('AuthController (e2e)', () => {
     });
 
     afterAll(async () => {
-        connection.close();
+        await connection.close();
         await app.close();
     });
 });
