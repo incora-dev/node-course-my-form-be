@@ -1,32 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Form } from './form.entity';
 import { CreateFormDto } from './dto/create-form.dto';
+import { User } from '../users/user.entity';
+import { FormDto } from './dto/form.dto';
+import { FormRepository } from './form.repository';
 
 @Injectable()
 export class FormsService {
     constructor(
-        @InjectRepository(Form)
-        private readonly formRepository: Repository<Form>,
+        @InjectRepository(FormRepository)
+        private readonly formRepository: FormRepository,
     ) {}
 
-    async create(createFormDto: CreateFormDto): Promise<Form> {
+    async create(formDto: FormDto, user: User): Promise<Form> {
+        const createFormDto: CreateFormDto = {
+            ...formDto,
+            owner: user,
+            formCode: '<iframe></iframe>',
+        };
+
         return await this.formRepository.save(createFormDto);
     }
 
-    async getAll(id: number): Promise<Form[]> {
+    async getUserForms(userId: number): Promise<Form[]> {
         return await this.formRepository.find({
-            relations: ['owner'],
-            where: { owner: { id } },
+            where: { owner: userId },
         });
     }
 
-    async getOne(id: number): Promise<Form> {
-        return await this.formRepository.findOne(id, { relations: ['owner'] });
+    async getUserForm(formId: number, userId: number): Promise<Form> {
+        const form = await this.formRepository.findOne(formId, {
+            where: { owner: userId },
+        });
+
+        if (!form) {
+            throw new NotFoundException(`Form with ID "${formId}" not found`);
+        }
+
+        return form;
     }
 
-    async delete(id: number): Promise<DeleteResult> {
-        return await this.formRepository.delete(id);
+    async delete(formId: number, user: User): Promise<void> {
+        const result = await this.formRepository.delete({ id: formId, owner: user });
+
+        if (result.affected === 0) {
+            throw new NotFoundException(`Form with ID "${formId}" not found`);
+        }
     }
 }

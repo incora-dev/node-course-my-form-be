@@ -1,5 +1,5 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { UserRole } from './user-role.enum';
+import { UserRole } from './enums/user-role.enum';
 import { IsEnum } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Form } from '../forms/form.entity';

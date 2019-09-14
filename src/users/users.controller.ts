@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { UserRole } from './user-role.enum';
+import { UserRole } from './enums/user-role.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
