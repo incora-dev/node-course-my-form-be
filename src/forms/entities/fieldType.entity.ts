@@ -5,9 +5,11 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     BaseEntity,
+    OneToMany,
 } from 'typeorm';
+import { FormField } from './formField.entity';
 
-@Entity()
+@Entity('field_types')
 export class FieldType extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -17,6 +19,9 @@ export class FieldType extends BaseEntity {
 
     @Column({ type: 'varchar', nullable: false })
     formControl: string;
+
+    @OneToMany(type => FormField, formField => formField.fieldType)
+    fields: FormField[];
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: number;
