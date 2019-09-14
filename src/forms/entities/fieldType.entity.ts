@@ -1,30 +1,22 @@
 import {
     Column,
     Entity,
-    ManyToOne,
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
     BaseEntity,
 } from 'typeorm';
-import { User } from '../users/user.entity';
 
 @Entity()
-export class Form extends BaseEntity {
+export class FieldType extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({ type: 'varchar', nullable: false })
-    name: string;
-
-    @Column({ type: 'varchar', nullable: true })
-    background: string;
+    type: string;
 
     @Column({ type: 'varchar', nullable: false })
-    formCode: string;
-
-    @ManyToOne(type => User, user => user.forms, { nullable: false })
-    owner: User;
+    formControl: string;
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: number;

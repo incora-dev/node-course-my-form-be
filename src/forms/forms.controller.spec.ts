@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FormsController } from './forms.controller';
 import { FormsService } from './forms.service';
-import { Form } from './form.entity';
+import { Form } from './entities/form.entity';
 
 describe('FormsController', () => {
     let controller: FormsController;

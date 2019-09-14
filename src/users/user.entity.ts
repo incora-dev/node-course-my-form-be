@@ -2,7 +2,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 't
 import { UserRole } from './enums/user-role.enum';
 import { IsEnum } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { Form } from '../forms/form.entity';
+import { Form } from '../forms/entities/form.entity';
 
 @Entity()
 export class User extends BaseEntity {

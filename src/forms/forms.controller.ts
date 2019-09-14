@@ -1,6 +1,6 @@
 import { Controller, Post, Get, Put, Delete, Param, UseGuards, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Form } from './form.entity';
+import { Form } from './entities/form.entity';
 import { User } from '../users/user.entity';
 import { FormDto } from './dto/form.dto';
 import { Roles } from '../decorators/roles.decorator';
