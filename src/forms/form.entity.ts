@@ -5,11 +5,12 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    BaseEntity,
 } from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Entity()
-export class Form {
+export class Form extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 

@@ -1,13 +1,4 @@
-import {
-    Controller,
-    ForbiddenException,
-    Post,
-    Get,
-    Delete,
-    Param,
-    UseGuards,
-    Body,
-} from '@nestjs/common';
+import { Controller, Post, Get, Put, Delete, Param, UseGuards, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Form } from './form.entity';
 import { User } from '../users/user.entity';
@@ -17,6 +8,7 @@ import { UserRole } from '../users/enums/user-role.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { GetUser } from '../users/decorators/get-user-decorator';
 import { FormsService } from './forms.service';
+import { UpdateFormDto } from './dto/update-form.dto';
 
 @Controller('forms')
 @UseGuards(AuthGuard('jwt'))
@@ -26,8 +18,8 @@ export class FormsController {
     @Post()
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    async create(@Body() formDto: FormDto, @GetUser() user: User): Promise<Form> {
-        return await this.formsService.create(formDto, user);
+    async createForm(@Body() formDto: FormDto, @GetUser() user: User): Promise<Form> {
+        return await this.formsService.createForm(formDto, user);
     }
 
     @Get()
@@ -44,10 +36,21 @@ export class FormsController {
         return await this.formsService.getUserForm(formId, user.id);
     }
 
+    @Put('/:id')
+    @Roles(UserRole.ADMIN)
+    @UseGuards(RolesGuard)
+    async updateForm(
+        @Param('id') formId: number,
+        @Body() updateFormDto: UpdateFormDto,
+        @GetUser() user: User,
+    ): Promise<Form> {
+        return await this.formsService.updateForm(formId, updateFormDto, user.id);
+    }
+
     @Delete('/:id')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    async delete(@Param('id') formId: number, @GetUser() user: User): Promise<void> {
-        return await this.formsService.delete(formId, user);
+    async deleteForm(@Param('id') formId: number, @GetUser() user: User): Promise<void> {
+        return await this.formsService.deleteForm(formId, user);
     }
 }
