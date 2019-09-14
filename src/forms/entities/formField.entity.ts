@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Form } from './form.entity';
 import { FieldType } from './fieldType.entity';
+import { FieldPattern } from './fieldPatterns.entity';
 
 @Entity('form_fields')
 export class FormField extends BaseEntity {
@@ -18,8 +19,8 @@ export class FormField extends BaseEntity {
     @Column({ type: 'varchar', nullable: true })
     placeholder: string;
 
-    @Column({ type: 'varchar', nullable: true })
-    pattern: string;
+    @ManyToOne(type => FieldPattern, fieldPattern => fieldPattern.fields, { nullable: false })
+    pattern: FieldPattern;
 
     @ManyToOne(type => Form, form => form.fields)
     form: Form;
@@ -27,9 +28,9 @@ export class FormField extends BaseEntity {
     @ManyToOne(type => FieldType, fieldType => fieldType.fields)
     fieldType: FieldType;
 
-    @CreateDateColumn({ type: 'timestamp' })
+    @CreateDateColumn({ type: 'timestamp', select: false })
     createdAt: number;
 
-    @UpdateDateColumn({ type: 'timestamp' })
+    @UpdateDateColumn({ type: 'timestamp', select: false })
     updatedAt: number;
 }

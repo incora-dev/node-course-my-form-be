@@ -6,8 +6,11 @@ import {
     UpdateDateColumn,
     BaseEntity,
     OneToMany,
+    JoinTable,
+    ManyToMany,
 } from 'typeorm';
 import { FormField } from './formField.entity';
+import { FieldPattern } from './fieldPatterns.entity';
 
 @Entity('field_types')
 export class FieldType extends BaseEntity {
@@ -23,9 +26,17 @@ export class FieldType extends BaseEntity {
     @OneToMany(type => FormField, formField => formField.fieldType)
     fields: FormField[];
 
-    @CreateDateColumn({ type: 'timestamp' })
+    @ManyToMany(() => FieldPattern, fieldPattern => fieldPattern.fieldTypes)
+    @JoinTable({
+        name: 'field_types_patterns',
+        joinColumn: { name: 'fieldTypeId' },
+        inverseJoinColumn: { name: 'fieldPatternId' },
+    })
+    patterns: FieldPattern[];
+
+    @CreateDateColumn({ type: 'timestamp', select: false })
     createdAt: number;
 
-    @UpdateDateColumn({ type: 'timestamp' })
+    @UpdateDateColumn({ type: 'timestamp', select: false })
     updatedAt: number;
 }

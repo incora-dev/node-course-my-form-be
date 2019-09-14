@@ -62,9 +62,9 @@ export class User extends BaseEntity {
     @OneToMany(type => Form, form => form.owner)
     forms: Form[];
 
-    @CreateDateColumn({ type: 'timestamp' })
+    @CreateDateColumn({ type: 'timestamp', select: false })
     createdAt: number;
 
-    @UpdateDateColumn({ type: 'timestamp' })
+    @UpdateDateColumn({ type: 'timestamp', select: false })
     updatedAt: number;
 }
