@@ -7,7 +7,7 @@ import { User } from './user.entity';
 
 describe('UsersController', () => {
     let controller: UsersController;
-    let userService: UsersService;
+    let service: UsersService;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -21,7 +21,7 @@ describe('UsersController', () => {
             controllers: [UsersController],
             exports: [UsersService],
         }).compile();
-        userService = module.get<UsersService>(UsersService);
+        service = module.get<UsersService>(UsersService);
         controller = module.get<UsersController>(UsersController);
     });
 
