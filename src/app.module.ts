@@ -3,14 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { FormsModule } from "./forms/forms.module";
+import { FormsModule } from './forms/forms.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forRoot(typeOrmConfig),
-        AuthModule,
-        UsersModule,
-        FormsModule,
-    ],
+    imports: [TypeOrmModule.forRoot(typeOrmConfig), AuthModule, UsersModule, FormsModule],
 })
 export class AppModule {}
