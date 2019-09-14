@@ -1,7 +1,7 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { UserRole } from './user-role.enum';
 import { IsEnum } from 'class-validator';
-import { Form } from "../forms/form.entity";
+import { Form } from '../forms/form.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -40,5 +40,5 @@ export class User extends BaseEntity {
     role: string;
 
     @OneToMany(type => Form, form => form.owner)
-    forms: Array<Form>
+    forms: Array<Form>;
 }
