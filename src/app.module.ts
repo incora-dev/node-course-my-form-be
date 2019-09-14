@@ -6,11 +6,6 @@ import { UsersModule } from './users/users.module';
 import { FormsModule } from './forms/forms.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forRoot(typeOrmConfig),
-        AuthModule,
-        UsersModule,
-        FormsModule,
-    ],
+    imports: [TypeOrmModule.forRoot(typeOrmConfig), AuthModule, UsersModule, FormsModule],
 })
 export class AppModule {}
