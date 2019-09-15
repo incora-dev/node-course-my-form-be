@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Form } from './form.entity';
 import { FieldType } from './fieldType.entity';
-import { FieldPattern } from './fieldPatterns.entity';
+import { FieldPattern } from './fieldPattern.entity';
 
 @Entity('form_fields')
 export class FormField extends BaseEntity {

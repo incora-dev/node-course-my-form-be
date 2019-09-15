@@ -26,7 +26,7 @@ export class UserSeederService {
             const userExist = await this.userRepository.findOne({ email: user.email });
 
             if (userExist) {
-                return Promise.resolve(null);
+                return null;
             }
 
             return await this.userRepository.createUser(user);

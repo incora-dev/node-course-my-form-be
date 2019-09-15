@@ -10,7 +10,7 @@ import {
     ManyToMany,
 } from 'typeorm';
 import { FormField } from './formField.entity';
-import { FieldPattern } from './fieldPatterns.entity';
+import { FieldPattern } from './fieldPattern.entity';
 
 @Entity('field_types')
 export class FieldType extends BaseEntity {
