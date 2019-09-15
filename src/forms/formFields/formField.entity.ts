@@ -7,9 +7,9 @@ import {
     BaseEntity,
     ManyToOne,
 } from 'typeorm';
-import { Form } from './form.entity';
-import { FieldType } from './fieldType.entity';
-import { FieldPattern } from './fieldPattern.entity';
+import { Form } from '../form.entity';
+import { FieldType } from '../fieldTypes/fieldType.entity';
+import { FieldPattern } from '../fieldPatterns/fieldPattern.entity';
 
 @Entity('form_fields')
 export class FormField extends BaseEntity {

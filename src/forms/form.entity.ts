@@ -8,8 +8,8 @@ import {
     BaseEntity,
     OneToMany,
 } from 'typeorm';
-import { User } from '../../users/user.entity';
-import { FormField } from './formField.entity';
+import { User } from '../users/user.entity';
+import { FormField } from './formFields/formField.entity';
 
 @Entity('forms')
 export class Form extends BaseEntity {

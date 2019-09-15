@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FormsService } from './forms.service';
-import { Form } from './entities/form.entity';
+import { Form } from './form.entity';
 
 import { typeOrmConfig } from '../config/typeorm.config';
 

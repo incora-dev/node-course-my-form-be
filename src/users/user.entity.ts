@@ -10,7 +10,7 @@ import {
 import { UserRole } from './enums/user-role.enum';
 import { IsEnum } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { Form } from '../forms/entities/form.entity';
+import { Form } from '../forms/form.entity';
 
 @Entity('users')
 export class User extends BaseEntity {

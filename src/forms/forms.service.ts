@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Form } from './entities/form.entity';
+import { Form } from './form.entity';
 import { CreateFormDto } from './dto/create-form.dto';
 import { User } from '../users/user.entity';
 import { FormDto } from './dto/form.dto';
-import { FormRepository } from './repositories/form.repository';
+import { FormRepository } from './form.repository';
 import { UpdateFormDto } from './dto/update-form.dto';
 
 @Injectable()

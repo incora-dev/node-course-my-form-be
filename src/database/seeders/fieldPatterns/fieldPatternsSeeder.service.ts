@@ -1,17 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FieldPatternsSeeds } from './data';
-import { FieldPattern } from '../../../forms/entities/fieldPattern.entity';
-import { FieldPatternRepository } from '../../../forms/repositories/fieldPattern.repository';
+import { FieldPattern } from '../../../forms/fieldPatterns/fieldPattern.entity';
+import { FieldPatternRepository } from '../../../forms/fieldPatterns/fieldPattern.repository';
 
-/**
- * Service dealing with fieldPattern based operations.
- */
 @Injectable()
 export class FieldPatternsSeederService {
-    /**
-     * Create an instance of class.
-     */
     constructor(
         @InjectRepository(FieldPatternRepository)
         private readonly fieldPatternRepository: FieldPatternRepository,

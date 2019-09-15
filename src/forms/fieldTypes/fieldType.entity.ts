@@ -9,8 +9,8 @@ import {
     JoinTable,
     ManyToMany,
 } from 'typeorm';
-import { FormField } from './formField.entity';
-import { FieldPattern } from './fieldPattern.entity';
+import { FormField } from '../formFields/formField.entity';
+import { FieldPattern } from '../fieldPatterns/fieldPattern.entity';
 
 @Entity('field_types')
 export class FieldType extends BaseEntity {

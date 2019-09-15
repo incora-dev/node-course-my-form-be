@@ -5,14 +5,8 @@ import { User } from '../../../users/user.entity';
 import { UserRepository } from '../../../users/user.repository';
 import { CreateUserDto } from '../../../users/dto/create-user.dto';
 
-/**
- * Service dealing with user based operations.
- */
 @Injectable()
 export class UserSeederService {
-    /**
-     * Create an instance of class.
-     */
     constructor(
         @InjectRepository(UserRepository)
         private readonly userRepository: UserRepository,

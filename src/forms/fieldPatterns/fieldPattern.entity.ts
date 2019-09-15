@@ -8,8 +8,8 @@ import {
     ManyToMany,
     OneToMany,
 } from 'typeorm';
-import { FieldType } from './fieldType.entity';
-import { FormField } from './formField.entity';
+import { FieldType } from '../fieldTypes/fieldType.entity';
+import { FormField } from '../formFields/formField.entity';
 
 @Entity('field_patterns')
 export class FieldPattern extends BaseEntity {

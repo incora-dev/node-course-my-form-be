@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { FormsService } from './forms.service';
 import { FormsController } from './forms.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { FormRepository } from './repositories/form.repository';
-import { FieldTypeRepository } from './repositories/fieldType.repository';
-import { FormFieldRepository } from './repositories/FormField.repository';
-import { FieldPatternRepository } from './repositories/fieldPattern.repository';
+import { FormRepository } from './form.repository';
+import { FieldTypeRepository } from './fieldTypes/fieldType.repository';
+import { FormFieldRepository } from './formFields/formField.repository';
+import { FieldPatternRepository } from './fieldPatterns/fieldPattern.repository';
 
 @Module({
     imports: [

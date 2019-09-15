@@ -1,5 +1,5 @@
 import { Repository, EntityRepository } from 'typeorm';
-import { Form } from '../entities/form.entity';
+import { Form } from './form.entity';
 import { NotFoundException } from '@nestjs/common';
 
 @EntityRepository(Form)
