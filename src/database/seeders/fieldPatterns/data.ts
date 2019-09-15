@@ -1,6 +1,6 @@
-import { UserRole } from '../../../users/enums/user-role.enum';
+import { FieldPatternDto } from '../../../forms/fieldPatterns/dto/field-pattern.dto';
 
-export const FieldPatternsSeeds = [
+export const FieldPatternsSeeds: FieldPatternDto[] = [
     {
         name: 'email',
         value:

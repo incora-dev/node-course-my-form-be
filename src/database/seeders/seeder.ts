@@ -1,6 +1,7 @@
 import { Injectable, Logger, InternalServerErrorException } from '@nestjs/common';
 import { UserSeederService } from './users/usersSeeder.service';
 import { FieldPatternsSeederService } from './fieldPatterns/fieldPatternsSeeder.service';
+import { FieldTypesSeederService } from './fieldTypes/fieldTypesSeeder.service';
 
 @Injectable()
 export class Seeder {
@@ -8,12 +9,14 @@ export class Seeder {
         private readonly logger: Logger,
         private readonly userSeederService: UserSeederService,
         private readonly fieldPatternsSeederService: FieldPatternsSeederService,
+        private readonly fieldTypesSeederService: FieldTypesSeederService,
     ) {}
 
     async seed() {
         try {
             const usersCmpleted = await this.users();
             const fieldPatternsCompleted = await this.fieldPatterns();
+            const fieldTypesCompleted = await this.fieldTypes();
 
             this.logger.debug('Successfuly completed seeding...');
 
@@ -52,6 +55,22 @@ export class Seeder {
             return true;
         } catch (err) {
             this.logger.error('Failed seeding field patterns...', err.stack);
+            throw new InternalServerErrorException();
+        }
+    }
+
+    async fieldTypes() {
+        try {
+            const createdTypes = await Promise.all(this.fieldTypesSeederService.create());
+
+            const createdTypesNumb = createdTypes.filter(
+                nullValueOrCreatedUser => nullValueOrCreatedUser,
+            ).length;
+
+            this.logger.debug('No. of field types created : ' + createdTypesNumb);
+            return true;
+        } catch (err) {
+            this.logger.error('Failed seeding field types...', err.stack);
             throw new InternalServerErrorException();
         }
     }
