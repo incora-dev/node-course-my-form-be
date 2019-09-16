@@ -12,7 +12,6 @@ import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
 import { SaveFormDto } from './dto/save-form.dto';
 import { FormFieldService } from './formFields/formFields.service';
-import { formatWithOptions } from 'util';
 
 @Injectable()
 export class FormsService {
@@ -47,20 +46,39 @@ export class FormsService {
         return await this.formRepository.getFormByUser(formId, userId);
     }
 
-    // TODO
-    // async updateForm(formId: number, updateFormDto: UpdateFormDto, userId: number): Promise<Form> {
-    async updateForm(formId: number, updateFormDto: UpdateFormDto, userId: number) {
-        // TODO
-        // const form = await this.formRepository.getFormByUser(formId, userId);
-        // const saveFormDto: SaveFormDto = {
-        //     ...updateFormDto,
-        //     formCode: this.formRepository.generateFormCode(),
-        // };
-        // const isUpdated = await this.formRepository.update({ id: form.id }, saveFormDto);
-        // if (!isUpdated) {
-        //     throw new InternalServerErrorException('User not updated');
-        // }
-        // return await this.formRepository.findOne(form.id);
+    async updateForm(formId: number, updateFormDto: UpdateFormDto, user: User): Promise<Form> {
+        const formFieldsDto = updateFormDto.fields;
+        if (formFieldsDto) {
+            delete updateFormDto.fields;
+        }
+
+        // get form data
+        const form = await this.formRepository.getFormByUser(formId, user.id, false);
+
+        const saveFormDto: SaveFormDto = {
+            ...updateFormDto,
+            owner: user,
+            formCode: this.formRepository.generateFormCode(),
+        };
+
+        // update form info
+        const isFormUpdated = await this.formRepository.update({ id: form.id }, saveFormDto);
+
+        // update form fields
+        if (formFieldsDto) {
+            // delete old fields
+            await this.formFieldService.deleteFormFields(form);
+
+            // create new fields
+            const formFields = await this.formFieldService.createFormFields(formFieldsDto, form);
+        }
+
+        if (!isFormUpdated) {
+            throw new InternalServerErrorException('Form not updated');
+        }
+
+        // return form with all data
+        return await this.formRepository.getFormByUser(form.id, user.id);
     }
 
     async deleteForm(formId: number, user: User): Promise<void> {

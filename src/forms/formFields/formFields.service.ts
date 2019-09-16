@@ -61,4 +61,8 @@ export class FormFieldService {
 
         return formField;
     }
+
+    async deleteFormFields(form: Form) {
+        return await this.formFieldRepository.delete({ form });
+    }
 }

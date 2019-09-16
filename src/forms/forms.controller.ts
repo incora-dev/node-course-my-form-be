@@ -43,10 +43,8 @@ export class FormsController {
         @Param('id') formId: number,
         @Body() updateFormDto: UpdateFormDto,
         @GetUser() user: User,
-        // TODO
-        // ): Promise<Form> {
-    ) {
-        return await this.formsService.updateForm(formId, updateFormDto, user.id);
+    ): Promise<Form> {
+        return await this.formsService.updateForm(formId, updateFormDto, user);
     }
 
     @Delete('/:id')
