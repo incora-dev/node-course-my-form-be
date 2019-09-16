@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FieldTypeRepository } from './fieldType.repository';
+import { FieldType } from './fieldType.entity';
 
 @Injectable()
 export class FieldTypesService {
@@ -16,11 +17,11 @@ export class FieldTypesService {
         return await this.fieldTypeRepository.find();
     }
 
-    async getFieldType(typeId: number) {
-        const fieldType = await this.fieldTypeRepository.findOne(typeId);
+    async getFieldTypeByParams(params): Promise<FieldType> {
+        const fieldType = await this.fieldTypeRepository.findOne(params);
 
         if (!fieldType) {
-            throw new NotFoundException(`Field type with ID "${typeId}" not found`);
+            throw new NotFoundException('Field type not found');
         }
 
         return fieldType;

@@ -22,7 +22,7 @@ export class FieldTypesController {
     @Get('/:id')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    async getFieldType(@Param('id') typeId: number): Promise<FieldType> {
-        return await this.fieldTypesService.getFieldType(typeId);
+    async getFieldTypeByParams(@Param('id') id: number): Promise<FieldType> {
+        return await this.fieldTypesService.getFieldTypeByParams({ id });
     }
 }

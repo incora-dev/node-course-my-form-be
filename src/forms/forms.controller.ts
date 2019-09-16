@@ -2,12 +2,12 @@ import { Controller, Post, Get, Put, Delete, Param, UseGuards, Body } from '@nes
 import { AuthGuard } from '@nestjs/passport';
 import { Form } from './form.entity';
 import { User } from '../users/user.entity';
-import { FormDto } from './dto/form.dto';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '../users/enums/user-role.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { GetUser } from '../users/decorators/get-user-decorator';
 import { FormsService } from './forms.service';
+import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
 
 @Controller('forms')
@@ -18,8 +18,8 @@ export class FormsController {
     @Post()
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    async createForm(@Body() formDto: FormDto, @GetUser() user: User): Promise<Form> {
-        return await this.formsService.createForm(formDto, user);
+    async createForm(@Body() createFormDto: CreateFormDto, @GetUser() user: User): Promise<Form> {
+        return await this.formsService.createForm(createFormDto, user);
     }
 
     @Get()
@@ -43,7 +43,9 @@ export class FormsController {
         @Param('id') formId: number,
         @Body() updateFormDto: UpdateFormDto,
         @GetUser() user: User,
-    ): Promise<Form> {
+        // TODO
+        // ): Promise<Form> {
+    ) {
         return await this.formsService.updateForm(formId, updateFormDto, user.id);
     }
 
