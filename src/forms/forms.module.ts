@@ -3,20 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FormsService } from './forms.service';
 import { FormsController } from './forms.controller';
 import { FormRepository } from './form.repository';
-import { FieldTypeRepository } from './fieldTypes/fieldType.repository';
-import { FormFieldRepository } from './formFields/formField.repository';
-import { FieldPatternRepository } from './fieldPatterns/fieldPattern.repository';
+import { FieldTypesModule } from './fieldTypes/fieldTypes.module';
+import { FieldTypesController } from './fieldTypes/fieldTypes.controller';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            FormRepository,
-            FieldTypeRepository,
-            FormFieldRepository,
-            FieldPatternRepository,
-        ]),
-    ],
-    controllers: [FormsController],
+    imports: [TypeOrmModule.forFeature([FormRepository]), FieldTypesModule],
+    controllers: [FieldTypesController, FormsController],
     providers: [FormsService],
     exports: [FormsService],
 })

@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FieldTypesSeederService } from './fieldTypes.service';
+import { FieldTypesService } from './fieldTypes.service';
 import { FieldTypeRepository } from './fieldType.repository';
+import { FieldTypesController } from './fieldTypes.controller';
 
 @Module({
     imports: [TypeOrmModule.forFeature([FieldTypeRepository])],
-    providers: [FieldTypesSeederService],
-    exports: [FieldTypesSeederService],
+    controllers: [FieldTypesController],
+    providers: [FieldTypesService],
+    exports: [FieldTypesService],
 })
-export class FieldTypesSeederModule {}
+export class FieldTypesModule {}
