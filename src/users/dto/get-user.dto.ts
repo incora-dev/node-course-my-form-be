@@ -12,5 +12,5 @@ export class GetUserDto {
 
     @IsOptional()
     @IsEnum(UserRole)
-    role?: string;
+    role?: UserRole;
 }
