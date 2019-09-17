@@ -52,5 +52,5 @@ export class User extends BaseEntity {
     role: string;
 
     @OneToMany(type => Form, form => form.owner)
-    forms: Array<Form>;
+    forms: Form[];
 }
