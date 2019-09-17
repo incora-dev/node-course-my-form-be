@@ -8,6 +8,7 @@ import {
     IsEmail,
 } from 'class-validator';
 import { UserRole } from '../enums/user-role.enum';
+// import { UserRole } from '../user-role.enum';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
