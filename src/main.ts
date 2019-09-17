@@ -3,6 +3,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 async function bootstrap() {
     const logger = new Logger('bootstrap');
@@ -20,6 +21,19 @@ async function bootstrap() {
         .build();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api', app, document);
+
+    // Auth
+    const authOptions = new DocumentBuilder()
+        .setTitle('Form builder auth')
+        .setDescription('Form builder auth API description')
+        .setVersion('1.0')
+        .addTag('auth')
+        .addBearerAuth()
+        .build();
+    const authDocument = SwaggerModule.createDocument(app, authOptions, {
+        include: [AuthModule],
+    });
+    SwaggerModule.setup('api/auth', app, authDocument);
 
     // Users
     const usersOptions = new DocumentBuilder()

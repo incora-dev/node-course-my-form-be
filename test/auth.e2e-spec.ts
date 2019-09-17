@@ -19,16 +19,14 @@ describe('AuthController (e2e)', () => {
     let userRepository: Repository<User>;
 
     const adminUser = usersSeed[0];
-    // const simpleUser = usersSeed[1];
+    const simpleUser = usersSeed[1];
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 UsersService,
                 {
-                    // how you provide the injection token in a test instance
                     provide: getRepositoryToken(User),
-                    // as a class value, Repository needs no generics
                     useClass: Repository,
                 },
             ],
@@ -45,7 +43,7 @@ describe('AuthController (e2e)', () => {
         httpServer = app.getHttpServer();
         connection = app.get(Connection);
 
-        // Clear database before start
+        // clear database before start
         clearDB(connection);
     });
 
@@ -92,6 +90,34 @@ describe('AuthController (e2e)', () => {
         //         .send(wrongRoleUser)
         //         .expect(400);
         // });
+    });
+
+    describe(`POST /auth/signin`, () => {
+        it('Should login User', async () => {
+            const authCredentials = {
+                email: adminUser.email,
+                password: adminUser.password,
+            };
+
+            const response = await request(httpServer)
+                .post('/auth/signin')
+                .send(authCredentials)
+                .expect(201);
+
+            expect(response.body.accessToken).toBeDefined();
+        });
+
+        it(`Shouldn't login User`, async () => {
+            const wrongAuthCredentials = {
+                email: simpleUser.email,
+                password: simpleUser.password,
+            };
+
+            const response = await request(httpServer)
+                .post('/auth/signin')
+                .send(wrongAuthCredentials)
+                .expect(401);
+        });
     });
 
     afterAll(async () => {
