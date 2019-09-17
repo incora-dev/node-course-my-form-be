@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { FormsService } from './forms.service';
 import { FormsController } from './forms.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Form } from './form.entity';
+import { FormRepository } from './form.repository';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Form])],
-    providers: [FormsService],
+    imports: [TypeOrmModule.forFeature([FormRepository])],
     controllers: [FormsController],
+    providers: [FormsService],
+    exports: [FormsService],
 })
 export class FormsModule {}

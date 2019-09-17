@@ -1,7 +1,6 @@
 import { FormDto } from './form.dto';
 import { User } from '../../users/user.entity';
 
-export class CreateFormDto extends FormDto {
-    formCode: string;
+export class UpdateFormDto extends FormDto {
     owner: User;
 }

@@ -51,5 +51,5 @@ While the application is running, open your browser and navigate to http://local
 You can also view the documentation for each module separately:
   - Auth http://localhost:3000/api/auth
   - Users http://localhost:3000/api/users
-  
+
 If you want to download the corresponding Swagger JSON file, you can simply call http://localhost:3000/api-json in your browser.

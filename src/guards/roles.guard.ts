@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRole } from '../users/user-role.enum';
+import { UserRole } from '../users/enums/user-role.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -22,7 +22,6 @@ export class RolesGuard implements CanActivate {
         if (user && user.role && hasRole()) {
             return true;
         }
-
-        throw new ForbiddenException("You don't have permission (Roles).");
+        throw new ForbiddenException(`You don't have permission (Roles).`);
     }
 }

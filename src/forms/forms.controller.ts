@@ -1,23 +1,14 @@
-import {
-    Controller,
-    ForbiddenException,
-    Post,
-    Get,
-    Delete,
-    Param,
-    Req,
-    UseGuards,
-    Body,
-} from '@nestjs/common';
-import { Roles } from '../decorators/roles.decorator';
-import { UserRole } from '../users/user-role.enum';
-import { RolesGuard } from '../guards/roles.guard';
-import { CreateFormDto } from './dto/create-form.dto';
-
-import { Form } from './form.entity';
-import { FormsService } from './forms.service';
+import { Controller, Post, Get, Put, Delete, Param, UseGuards, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { DeleteResult } from 'typeorm';
+import { Form } from './form.entity';
+import { User } from '../users/user.entity';
+import { FormDto } from './dto/form.dto';
+import { Roles } from '../decorators/roles.decorator';
+import { UserRole } from '../users/enums/user-role.enum';
+import { RolesGuard } from '../guards/roles.guard';
+import { GetUser } from '../users/decorators/get-user-decorator';
+import { FormsService } from './forms.service';
+import { UpdateFormDto } from './dto/update-form.dto';
 
 @Controller('forms')
 @UseGuards(AuthGuard('jwt'))
@@ -27,34 +18,39 @@ export class FormsController {
     @Post()
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    create(@Body() body: CreateFormDto, @Req() request): Promise<Form> {
-        return this.formsService.create({ owner: request.user, ...body });
+    async createForm(@Body() formDto: FormDto, @GetUser() user: User): Promise<Form> {
+        return await this.formsService.createForm(formDto, user);
     }
 
     @Get()
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    getAll(@Req() request): Promise<Form[]> {
-        return this.formsService.getAll(request.user.id);
+    async getUserForms(@GetUser() user: User): Promise<Form[]> {
+        return await this.formsService.getUserForms(user.id);
     }
 
     @Get('/:id')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    async getOne(@Param('id') id: number, @Req() request): Promise<Form> {
-        const form = await this.formsService.getOne(id);
+    async getUserForm(@Param('id') formId: number, @GetUser() user: User): Promise<Form> {
+        return await this.formsService.getUserForm(formId, user.id);
+    }
 
-        if (request.user.id !== form.owner.id) {
-            throw new ForbiddenException();
-        }
-
-        return form;
+    @Put('/:id')
+    @Roles(UserRole.ADMIN)
+    @UseGuards(RolesGuard)
+    async updateForm(
+        @Param('id') formId: number,
+        @Body() updateFormDto: UpdateFormDto,
+        @GetUser() user: User,
+    ): Promise<Form> {
+        return await this.formsService.updateForm(formId, updateFormDto, user.id);
     }
 
     @Delete('/:id')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    delete(@Param('id') id: number): Promise<DeleteResult> {
-        return this.formsService.delete(id);
+    async deleteForm(@Param('id') formId: number, @GetUser() user: User): Promise<void> {
+        return await this.formsService.deleteForm(formId, user);
     }
 }
