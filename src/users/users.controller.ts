@@ -7,17 +7,34 @@ import { UserRole } from './user-role.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
+import {
+    ApiUseTags,
+    ApiBearerAuth,
+    ApiCreatedResponse,
+    ApiUnauthorizedResponse,
+    ApiBadRequestResponse,
+    ApiForbiddenResponse,
+} from '@nestjs/swagger';
 
+@ApiUseTags('users')
+@ApiBearerAuth()
 @Controller('users')
 @UseGuards(AuthGuard('jwt'))
 export class UsersController {
     constructor(private usersService: UsersService) {}
 
     @Post('/')
+    @ApiCreatedResponse({
+        description: 'The record has been successfully created.',
+        type: User,
+    })
+    @ApiBadRequestResponse({ description: 'Bad request.' })
+    @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
+    @ApiForbiddenResponse({ description: 'Forbidden.' })
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
-        return this.usersService.createUser(createUserDto);
+    async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+        return await this.usersService.createUser(createUserDto);
     }
 
     @Get()
@@ -33,14 +50,14 @@ export class UsersController {
     @Put('/:id')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto): Promise<User> {
-        return this.usersService.updateUser(id, updateUserDto);
+    async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+        return await this.usersService.updateUser(id, updateUserDto);
     }
 
     @Delete('/:id')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    deleteUser(@Param('id') id: number): Promise<void> {
-        return this.usersService.deleteUser(id);
+    async deleteUser(@Param('id') id: number): Promise<void> {
+        return await this.usersService.deleteUser(id);
     }
 }
