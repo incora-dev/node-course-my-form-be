@@ -1,11 +1,12 @@
 import {
     Controller,
     ForbiddenException,
+    Post,
     Get,
+    Delete,
     Param,
     Req,
     UseGuards,
-    Post,
     Body,
 } from '@nestjs/common';
 import { Roles } from '../decorators/roles.decorator';
@@ -16,6 +17,7 @@ import { CreateFormDto } from './dto/create-form.dto';
 import { Form } from './form.entity';
 import { FormsService } from './forms.service';
 import { AuthGuard } from '@nestjs/passport';
+import { DeleteResult } from 'typeorm';
 
 @Controller('forms')
 @UseGuards(AuthGuard('jwt'))
@@ -27,6 +29,13 @@ export class FormsController {
     @UseGuards(RolesGuard)
     create(@Body() body: CreateFormDto, @Req() request): Promise<Form> {
         return this.formsService.create({ owner: request.user, ...body });
+    }
+
+    @Get()
+    @Roles(UserRole.ADMIN)
+    @UseGuards(RolesGuard)
+    getAll(@Req() request): Promise<Form[]> {
+        return this.formsService.getAll(request.user.id);
     }
 
     @Get('/:id')
@@ -42,10 +51,10 @@ export class FormsController {
         return form;
     }
 
-    @Get()
+    @Delete('/:id')
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    getAll(@Req() request): Promise<Form[]> {
-        return this.formsService.getAll(request.user.id);
+    delete(@Param('id') id: number): Promise<DeleteResult> {
+        return this.formsService.delete(id);
     }
 }
