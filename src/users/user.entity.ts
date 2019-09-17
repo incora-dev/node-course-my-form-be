@@ -1,6 +1,7 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { UserRole } from './user-role.enum';
 import { IsEnum } from 'class-validator';
+import { Form } from "../forms/form.entity";
 import { ApiModelProperty } from '@nestjs/swagger';
 
 @Entity()
@@ -48,5 +49,8 @@ export class User extends BaseEntity {
     @ApiModelProperty({ enum: ['ADMIN', 'USER'] })
     @Column({ type: 'varchar', nullable: false })
     @IsEnum(UserRole)
-    role: UserRole;
+    role: string;
+
+    @OneToMany(type => Form, form => form.owner)
+    forms: Array<Form>
 }
