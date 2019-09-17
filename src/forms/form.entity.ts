@@ -7,17 +7,17 @@ export class Form {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: "varchar", nullable: false})
+    @Column({ type: 'varchar', nullable: false })
     name: string;
 
-    @Column({type: "varchar"})
+    @Column({ type: 'varchar' })
     formCode: string;
 
-    @Column({type: "varchar", nullable: true})
+    @Column({ type: 'varchar', nullable: true })
     background: string;
 
-    @Column({type: 'json', default: []})
-    fields: Array<IFormField>;
+    @Column({ type: 'json', default: [] })
+    fields: IFormField[];
 
     @ManyToOne(type => User, owner => owner.forms)
     owner: User;

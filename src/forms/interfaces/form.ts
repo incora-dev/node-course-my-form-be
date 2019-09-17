@@ -1,9 +1,9 @@
-import { IFormField } from "./form-field";
+import { IFormField } from './form-field';
 import { User } from '../../users/user.entity';
 
 export interface IForm {
     name: string;
-    fields: Array<IFormField>;
+    fields: IFormField[];
     formCode: string;
     background: string;
     owner: User;
