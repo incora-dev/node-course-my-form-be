@@ -47,6 +47,7 @@ $ npm run test:cov
 ```
 
 ## Documentation
+While the application is running, open your browser and navigate to http://localhost:3000/api. You should see the API documentation.
 While the application is running, open your browser and navigate to http://localhost:3000/api. You should see all API documentation.
 You can also view the documentation for each module separately:
   - Auth http://localhost:3000/api/auth
