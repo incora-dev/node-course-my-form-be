@@ -22,7 +22,7 @@ export class FormField extends BaseEntity {
     @ManyToOne(type => FieldPattern, fieldPattern => fieldPattern.fields, { nullable: false })
     pattern: FieldPattern;
 
-    @ManyToOne(type => Form, form => form.fields)
+    @ManyToOne(type => Form, form => form.fields, { onDelete: 'CASCADE' })
     form: Form;
 
     @ManyToOne(type => FieldType, fieldType => fieldType.fields)
