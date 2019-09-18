@@ -23,4 +23,9 @@ export class AccountController {
     ): Promise<User> {
         return await this.usersService.updateUser(user.id, updateUserDto);
     }
+
+    @Delete()
+    async deleteUser(@GetUser() user: User): Promise<void> {
+        return await this.usersService.deleteUser(user.id);
+    }
 }

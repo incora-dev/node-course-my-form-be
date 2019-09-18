@@ -25,7 +25,7 @@ export class Form extends BaseEntity {
     @Column({ type: 'varchar', nullable: false })
     formCode: string;
 
-    @ManyToOne(type => User, user => user.forms, { nullable: false })
+    @ManyToOne(type => User, user => user.forms, { nullable: false, onDelete: 'CASCADE' })
     owner: User;
 
     @OneToMany(type => FormField, formField => formField.form)
