@@ -45,7 +45,7 @@ export class UsersService {
         }
     }
 
-    async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+    async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<User> {
         const { email, password } = authCredentialsDto;
 
         const user = await this.userRepository
@@ -57,7 +57,7 @@ export class UsersService {
             .getOne();
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            return user.email;
+            return user;
         } else {
             return null;
         }

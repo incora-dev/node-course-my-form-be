@@ -19,13 +19,13 @@ export class AuthService {
     }
 
     async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
-        const email = await this.usersService.validateUserPassword(authCredentialsDto);
+        const user = await this.usersService.validateUserPassword(authCredentialsDto);
 
-        if (!email) {
+        if (!user) {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        const payload: JwtPayload = { email };
+        const payload: JwtPayload = { id: user.id };
         const accessToken = await this.jwtService.sign(payload);
         this.logger.debug(`Generated JWT Token with payload ${JSON.stringify(payload)}`);
 
