@@ -5,6 +5,8 @@ import { JwtPayload } from './jwt-payload-interface';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
+import { UserDto } from 'src/users/dto/user.dto';
+import { UserRole } from 'src/users/enums/user-role.enum';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +16,12 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async signUp(createUserDto: CreateUserDto): Promise<User> {
+    async signUp(userDto: UserDto): Promise<User> {
+        const createUserDto: CreateUserDto = {
+            ...userDto,
+            role: UserRole.USER,
+        };
+
         return await this.usersService.createUser(createUserDto);
     }
 

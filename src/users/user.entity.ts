@@ -54,7 +54,7 @@ export class User extends BaseEntity {
     @Column({ type: 'text', nullable: true })
     aboutMe: string;
 
-    @ApiModelProperty({ enum: ['ADMIN', 'USER'] })
+    @ApiModelProperty({ enum: Object.values(UserRole) })
     @Column({ type: 'varchar', nullable: false })
     @IsEnum(UserRole)
     role: UserRole;
