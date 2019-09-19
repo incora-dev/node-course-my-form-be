@@ -27,7 +27,7 @@ export class UpdateUserDto {
     @Matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, {
         message: 'First name can contain only letters',
     })
-    firstName: string;
+    firstName?: string;
 
     @IsOptional()
     @Matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, {

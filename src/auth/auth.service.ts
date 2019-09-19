@@ -5,8 +5,8 @@ import { JwtPayload } from './jwt-payload-interface';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
-import { UserDto } from 'src/users/dto/user.dto';
-import { UserRole } from 'src/users/enums/user-role.enum';
+import { UserDto } from '../users/dto/user.dto';
+import { UserRole } from '../users/enums/user-role.enum';
 
 @Injectable()
 export class AuthService {

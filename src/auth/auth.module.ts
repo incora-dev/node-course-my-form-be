@@ -7,7 +7,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { jwtConfig } from '../config/jwt.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from 'src/users/user.repository';
+import { UserRepository } from '../users/user.repository';
 
 @Module({
     imports: [
