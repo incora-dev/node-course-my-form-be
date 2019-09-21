@@ -2,6 +2,7 @@ import { Controller, Post, Get, Put, Delete, Param, UseGuards, Body, Req } from 
 import { AuthGuard } from '@nestjs/passport';
 import { FieldType } from './fieldType.entity';
 import { FieldTypesService } from './fieldTypes.service';
+import { IdDto } from '../../common/dto/id.dto';
 
 @Controller('forms/field-types')
 @UseGuards(AuthGuard('jwt'))
@@ -14,7 +15,7 @@ export class FieldTypesController {
     }
 
     @Get('/:id')
-    async getFieldTypeByParams(@Param('id') id: number): Promise<FieldType> {
-        return await this.fieldTypesService.getFieldTypeByParams({ id });
+    async getFieldTypeByParams(@Param() params: IdDto): Promise<FieldType> {
+        return await this.fieldTypesService.getFieldTypeByParams(params);
     }
 }

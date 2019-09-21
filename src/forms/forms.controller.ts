@@ -6,6 +6,7 @@ import { GetUser } from '../users/decorators/get-user-decorator';
 import { FormsService } from './forms.service';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
+import { IdDto } from '../common/dto/id.dto';
 
 @Controller('forms')
 @UseGuards(AuthGuard('jwt'))
@@ -23,21 +24,21 @@ export class FormsController {
     }
 
     @Get('/:id')
-    async getUserForm(@Param('id') formId: number, @GetUser() user: User): Promise<Form> {
-        return await this.formsService.getUserForm(formId, user.id);
+    async getUserForm(@Param() params: IdDto, @GetUser() user: User): Promise<Form> {
+        return await this.formsService.getUserForm(params.id, user.id);
     }
 
     @Put('/:id')
     async updateForm(
-        @Param('id') formId: number,
+        @Param() params: IdDto,
         @Body() updateFormDto: UpdateFormDto,
         @GetUser() user: User,
     ): Promise<Form> {
-        return await this.formsService.updateForm(formId, updateFormDto, user);
+        return await this.formsService.updateForm(params.id, updateFormDto, user);
     }
 
     @Delete('/:id')
-    async deleteForm(@Param('id') formId: number, @GetUser() user: User): Promise<void> {
-        return await this.formsService.deleteForm(formId, user);
+    async deleteForm(@Param() params: IdDto, @GetUser() user: User): Promise<void> {
+        return await this.formsService.deleteForm(params.id, user);
     }
 }
