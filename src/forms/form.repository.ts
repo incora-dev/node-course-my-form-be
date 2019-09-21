@@ -20,7 +20,7 @@ export class FormRepository extends Repository<Form> {
 
         if (!form) {
             this.logger.error('Form not created: ' + saveFormDto);
-            throw new InternalServerErrorException();
+            throw new InternalServerErrorException('Form not created.');
         }
 
         return form;
@@ -42,7 +42,7 @@ export class FormRepository extends Repository<Form> {
         }
 
         if (!form) {
-            throw new NotFoundException(`Form with ID "${formId}" not found`);
+            throw new NotFoundException(`Form with ID "${formId}" not found.`);
         }
 
         return form;

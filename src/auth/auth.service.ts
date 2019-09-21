@@ -29,7 +29,7 @@ export class AuthService {
         const user = await this.usersService.validateUserPassword(authCredentialsDto);
 
         if (!user) {
-            throw new UnauthorizedException('Invalid credentials');
+            throw new UnauthorizedException('Invalid credentials.');
         }
 
         const payload: JwtPayload = { id: user.id };

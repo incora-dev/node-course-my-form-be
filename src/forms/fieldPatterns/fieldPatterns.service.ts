@@ -14,7 +14,7 @@ export class FieldPatternsService {
         const fieldPattern = await this.fieldPatternRepository.findOne(params);
 
         if (!fieldPattern) {
-            throw new NotFoundException('Field pattern not found');
+            throw new NotFoundException('Field pattern not found.');
         }
 
         return fieldPattern;

@@ -74,7 +74,7 @@ export class FormsService {
         }
 
         if (!isFormUpdated) {
-            throw new InternalServerErrorException('Form not updated');
+            throw new InternalServerErrorException('Form not updated.');
         }
 
         // return form with all data
@@ -85,7 +85,7 @@ export class FormsService {
         const result = await this.formRepository.delete({ id: formId, owner: user });
 
         if (result.affected === 0) {
-            throw new NotFoundException(`Form with ID "${formId}" not found`);
+            throw new NotFoundException(`Form with ID "${formId}" not found.`);
         }
     }
 }

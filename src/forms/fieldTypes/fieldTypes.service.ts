@@ -21,7 +21,7 @@ export class FieldTypesService {
         const fieldType = await this.fieldTypeRepository.findOne(params);
 
         if (!fieldType) {
-            throw new NotFoundException('Field type not found');
+            throw new NotFoundException('Field type not found.');
         }
 
         return fieldType;

@@ -56,7 +56,7 @@ export class FormFieldService {
 
         if (!formField) {
             this.logger.error('Form field not created: ' + saveFormFieldDto);
-            throw new InternalServerErrorException();
+            throw new InternalServerErrorException('Form field not created.');
         }
 
         return formField;
