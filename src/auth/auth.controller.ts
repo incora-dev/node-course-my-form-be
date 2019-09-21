@@ -1,7 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/user.entity';
 import {
     ApiUnauthorizedResponse,
@@ -10,6 +9,7 @@ import {
     ApiResponse,
     ApiUseTags,
 } from '@nestjs/swagger';
+import { UserDto } from '../users/dto/user.dto';
 
 @ApiUseTags('auth')
 @Controller('auth')
@@ -26,8 +26,8 @@ export class AuthController {
         status: 409,
         description: 'This email already exists',
     })
-    signUp(@Body() createUserDto: CreateUserDto): Promise<User> {
-        return this.authService.signUp(createUserDto);
+    signUp(@Body() userDto: UserDto): Promise<User> {
+        return this.authService.signUp(userDto);
     }
 
     @Post('/signin')

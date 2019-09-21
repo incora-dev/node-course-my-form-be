@@ -5,6 +5,8 @@ import { JwtPayload } from './jwt-payload-interface';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
+import { UserDto } from '../users/dto/user.dto';
+import { UserRole } from '../users/enums/user-role.enum';
 
 @Injectable()
 export class AuthService {
@@ -14,18 +16,23 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async signUp(createUserDto: CreateUserDto): Promise<User> {
+    async signUp(userDto: UserDto): Promise<User> {
+        const createUserDto: CreateUserDto = {
+            ...userDto,
+            role: UserRole.USER,
+        };
+
         return await this.usersService.createUser(createUserDto);
     }
 
     async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
-        const email = await this.usersService.validateUserPassword(authCredentialsDto);
+        const user = await this.usersService.validateUserPassword(authCredentialsDto);
 
-        if (!email) {
-            throw new UnauthorizedException('Invalid credentials');
+        if (!user) {
+            throw new UnauthorizedException('Invalid credentials.');
         }
 
-        const payload: JwtPayload = { email };
+        const payload: JwtPayload = { id: user.id };
         const accessToken = await this.jwtService.sign(payload);
         this.logger.debug(`Generated JWT Token with payload ${JSON.stringify(payload)}`);
 

@@ -1,6 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 import { AuthCredentialsDto } from '../auth/dto/auth-credentials.dto';
@@ -10,6 +9,8 @@ import { GetUserDto } from './dto/get-user.dto';
 
 @Injectable()
 export class UsersService {
+    private logger = new Logger('UsersService');
+
     constructor(
         @InjectRepository(UserRepository)
         private userRepository: UserRepository,
@@ -20,10 +21,14 @@ export class UsersService {
     }
 
     async getUserByParams(params: GetUserDto): Promise<User> {
+        if (!Object.keys(params).length) {
+            throw new BadRequestException();
+        }
+
         const user = await this.userRepository.findOne(params);
 
         if (!user) {
-            throw new NotFoundException('User not found');
+            throw new NotFoundException('User not found.');
         }
 
         return user;
@@ -38,14 +43,10 @@ export class UsersService {
     }
 
     async deleteUser(id: number): Promise<void> {
-        const result = await this.userRepository.delete({ id });
-
-        if (result.affected === 0) {
-            throw new NotFoundException(`User with ID "${id}" not found`);
-        }
+        return await this.userRepository.deleteUser(id);
     }
 
-    async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+    async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<User> {
         const { email, password } = authCredentialsDto;
 
         const user = await this.userRepository
@@ -56,8 +57,10 @@ export class UsersService {
             .where('user.email = :email', { email })
             .getOne();
 
-        if (user && (await bcrypt.compare(password, user.password))) {
-            return user.email;
+        const isSame = await this.userRepository.comparePasswords(password, user.password);
+
+        if (user && isSame) {
+            return user;
         } else {
             return null;
         }

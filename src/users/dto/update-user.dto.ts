@@ -24,11 +24,15 @@ export class UpdateUserDto {
     password?: string;
 
     @IsOptional()
-    @IsString()
+    @Matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, {
+        message: 'First name can contain only letters',
+    })
     firstName?: string;
 
     @IsOptional()
-    @IsString()
+    @Matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/, {
+        message: 'First name can contain only letters',
+    })
     lastName?: string;
 
     @IsOptional()

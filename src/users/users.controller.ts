@@ -4,9 +4,10 @@ import { User } from './user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserRole } from './enums/user-role.enum';
-import { RolesGuard } from '../guards/roles.guard';
-import { Roles } from '../decorators/roles.decorator';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { IdDto } from '../common/dto/id.dto';
 import {
     ApiUseTags,
     ApiBearerAuth,
@@ -52,8 +53,8 @@ export class UsersController {
     @ApiOkResponse({ description: 'The user has been successfully selected.', type: User })
     @ApiUnauthorizedResponse({ description: 'Unauthorized.' })
     @ApiNotFoundResponse({ description: 'Not found.' })
-    async getUserById(@Param('id') id: number): Promise<User> {
-        return await this.usersService.getUserByParams({ id });
+    async getUserById(@Param() params: IdDto): Promise<User> {
+        return await this.usersService.getUserByParams(params);
     }
 
     @Put('/:id')
@@ -65,8 +66,8 @@ export class UsersController {
     @ApiNotFoundResponse({ description: 'Not found.' })
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto): Promise<User> {
-        return await this.usersService.updateUser(id, updateUserDto);
+    async updateUser(@Param() params: IdDto, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+        return await this.usersService.updateUser(params.id, updateUserDto);
     }
 
     @Delete('/:id')
@@ -77,7 +78,7 @@ export class UsersController {
     @ApiNotFoundResponse({ description: 'Not found.' })
     @Roles(UserRole.ADMIN)
     @UseGuards(RolesGuard)
-    async deleteUser(@Param('id') id: number): Promise<void> {
-        return await this.usersService.deleteUser(id);
+    async deleteUser(@Param() params: IdDto): Promise<void> {
+        return await this.usersService.deleteUser(params.id);
     }
 }
