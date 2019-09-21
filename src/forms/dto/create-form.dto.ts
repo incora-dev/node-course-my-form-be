@@ -1,7 +1,8 @@
 import { FormDto } from './form.dto';
-import { User } from '../../users/user.entity';
+import { FormFieldDto } from '../formFields/dto/form-field.dto';
+import { IsArray } from 'class-validator';
 
 export class CreateFormDto extends FormDto {
-    formCode: string;
-    owner: User;
+    @IsArray()
+    fields: FormFieldDto[];
 }

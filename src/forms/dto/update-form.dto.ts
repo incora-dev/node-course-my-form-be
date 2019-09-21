@@ -1,6 +1,15 @@
 import { FormDto } from './form.dto';
-import { User } from '../../users/user.entity';
+import { IsOptional, IsArray } from 'class-validator';
+import { FormFieldDto } from '../formFields/dto/form-field.dto';
 
 export class UpdateFormDto extends FormDto {
-    owner: User;
+    @IsOptional()
+    name: string;
+
+    @IsOptional()
+    background: string;
+
+    @IsOptional()
+    @IsArray()
+    fields: FormFieldDto[];
 }

@@ -17,7 +17,11 @@ After PostgreSQL installation go to pgAdmin and create a new database (for examp
 
 Then you can run the command:
 ```bash
+# install all needed packages
 $ npm install
+
+# insert initial data into database
+$ npm run seed
 ```
 
 ## Running the app

@@ -1,9 +1,9 @@
 import { IsString } from 'class-validator';
 
-export class FormDto {
+export class FieldPatternDto {
     @IsString()
     name: string;
 
     @IsString()
-    background: string;
+    value: string;
 }

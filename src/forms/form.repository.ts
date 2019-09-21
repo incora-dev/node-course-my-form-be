@@ -1,13 +1,45 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { Form } from './form.entity';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, Logger, InternalServerErrorException } from '@nestjs/common';
+import { FormDto } from './dto/form.dto';
+import { User } from 'src/users/user.entity';
+import { SaveFormDto } from './dto/save-form.dto';
 
 @EntityRepository(Form)
 export class FormRepository extends Repository<Form> {
-    async getFormByUser(formId: number, userId: number): Promise<Form> {
-        const form = await this.findOne(formId, {
-            where: { owner: userId },
-        });
+    private logger = new Logger('FormRepository');
+
+    async createForm(formDto: FormDto, user: User) {
+        const saveFormDto: SaveFormDto = {
+            ...formDto,
+            owner: user,
+            formCode: this.generateFormCode(),
+        };
+
+        const form = await this.save(saveFormDto);
+
+        if (!form) {
+            this.logger.error('Form not created: ' + saveFormDto);
+            throw new InternalServerErrorException();
+        }
+
+        return form;
+    }
+
+    async getFormByUser(formId: number, userId: number, fullData: boolean = true): Promise<Form> {
+        let form: Form;
+
+        // get form with full data
+        if (fullData) {
+            form = await this.findOne(formId, {
+                relations: ['fields', 'fields.pattern', 'fields.fieldType'],
+                where: { owner: userId },
+            });
+        } else {
+            form = await this.findOne(formId, {
+                where: { owner: userId },
+            });
+        }
 
         if (!form) {
             throw new NotFoundException(`Form with ID "${formId}" not found`);

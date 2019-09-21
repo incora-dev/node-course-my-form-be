@@ -1,27 +1,39 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import {
+    Injectable,
+    NotFoundException,
+    InternalServerErrorException,
+    Logger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Form } from './form.entity';
-import { CreateFormDto } from './dto/create-form.dto';
 import { User } from '../users/user.entity';
-import { FormDto } from './dto/form.dto';
 import { FormRepository } from './form.repository';
+import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
+import { SaveFormDto } from './dto/save-form.dto';
+import { FormFieldService } from './formFields/formFields.service';
 
 @Injectable()
 export class FormsService {
+    private logger = new Logger('FormsService');
+
     constructor(
         @InjectRepository(FormRepository)
         private formRepository: FormRepository,
+        private formFieldService: FormFieldService,
     ) {}
 
-    async createForm(formDto: FormDto, user: User): Promise<Form> {
-        const createFormDto: CreateFormDto = {
-            ...formDto,
-            owner: user,
-            formCode: this.formRepository.generateFormCode(),
-        };
+    async createForm(createFormDto: CreateFormDto, user: User): Promise<Form> {
+        const formFieldsDto = createFormDto.fields;
+        delete createFormDto.fields;
 
-        return await this.formRepository.save(createFormDto);
+        const form = await this.formRepository.createForm(createFormDto, user);
+
+        // create form fields
+        const formFields = await this.formFieldService.createFormFields(formFieldsDto, form);
+
+        // return form with all data
+        return await this.formRepository.getFormByUser(form.id, user.id);
     }
 
     async getUserForms(userId: number): Promise<Form[]> {
@@ -34,20 +46,39 @@ export class FormsService {
         return await this.formRepository.getFormByUser(formId, userId);
     }
 
-    async updateForm(formId: number, updateFormDto: UpdateFormDto, userId: number): Promise<Form> {
-        const form = await this.formRepository.getFormByUser(formId, userId);
-        const saveFormDto: CreateFormDto = {
+    async updateForm(formId: number, updateFormDto: UpdateFormDto, user: User): Promise<Form> {
+        const formFieldsDto = updateFormDto.fields;
+        if (formFieldsDto) {
+            delete updateFormDto.fields;
+        }
+
+        // get form data
+        const form = await this.formRepository.getFormByUser(formId, user.id, false);
+
+        const saveFormDto: SaveFormDto = {
             ...updateFormDto,
+            owner: user,
             formCode: this.formRepository.generateFormCode(),
         };
 
-        const isUpdated = await this.formRepository.update({ id: form.id }, saveFormDto);
+        // update form info
+        const isFormUpdated = await this.formRepository.update({ id: form.id }, saveFormDto);
 
-        if (!isUpdated) {
-            throw new InternalServerErrorException('User not updated');
+        // update form fields
+        if (formFieldsDto) {
+            // delete old fields
+            await this.formFieldService.deleteFormFields(form);
+
+            // create new fields
+            const formFields = await this.formFieldService.createFormFields(formFieldsDto, form);
         }
 
-        return await this.formRepository.findOne(form.id);
+        if (!isFormUpdated) {
+            throw new InternalServerErrorException('Form not updated');
+        }
+
+        // return form with all data
+        return await this.formRepository.getFormByUser(form.id, user.id);
     }
 
     async deleteForm(formId: number, user: User): Promise<void> {

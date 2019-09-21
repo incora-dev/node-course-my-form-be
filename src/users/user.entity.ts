@@ -1,11 +1,18 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+    BaseEntity,
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 import { UserRole } from './enums/user-role.enum';
 import { IsEnum } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Form } from '../forms/form.entity';
 
-
-@Entity()
+@Entity('users')
 export class User extends BaseEntity {
     @ApiModelProperty()
     @PrimaryGeneratedColumn()
@@ -54,4 +61,10 @@ export class User extends BaseEntity {
 
     @OneToMany(type => Form, form => form.owner)
     forms: Form[];
+
+    @CreateDateColumn({ type: 'timestamp', select: false })
+    createdAt: number;
+
+    @UpdateDateColumn({ type: 'timestamp', select: false })
+    updatedAt: number;
 }
