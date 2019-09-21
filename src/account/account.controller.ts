@@ -1,15 +1,15 @@
-import { Controller, Get, Put, Delete, UseGuards, Body } from '@nestjs/common';
+import { Controller, Get, Put, Delete, UseGuards, Body, Post } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../users/user.entity';
-import { AccountService } from './account.service';
 import { GetUser } from '../users/decorators/get-user-decorator';
-import { UsersService } from '../users/users.service';
-import { UpdateUserDto } from '../users/dto/update-user.dto';
+import { AccountService } from './account.service';
+import { UpdateAccountDto } from './dto/update-account.dto';
+import { ChangePasswordDto } from '../users/dto/change-password.dto';
 
 @Controller('account')
 @UseGuards(AuthGuard('jwt'))
 export class AccountController {
-    constructor(private accountService: AccountService, private usersService: UsersService) {}
+    constructor(private accountService: AccountService) {}
 
     @Get()
     async getAccount(@GetUser() user: User): Promise<User> {
@@ -18,10 +18,18 @@ export class AccountController {
 
     @Put()
     async updateAccount(
-        @Body() updateUserDto: UpdateUserDto,
+        @Body() updateAccountDto: UpdateAccountDto,
         @GetUser() user: User,
     ): Promise<User> {
-        return await this.accountService.updateAccount(user, updateUserDto);
+        return await this.accountService.updateAccount(user, updateAccountDto);
+    }
+
+    @Post('change-password')
+    async changeAccountPassword(
+        @Body() changePasswordDto: ChangePasswordDto,
+        @GetUser() user: User,
+    ): Promise<void> {
+        return await this.accountService.changeAccountPassword(user, changePasswordDto);
     }
 
     @Delete()

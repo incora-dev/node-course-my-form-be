@@ -1,22 +1,26 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
-import { UsersService } from '../users/users.service';
-import { UpdateUserDto } from '../users/dto/update-user.dto';
+import { UserRepository } from '../users/user.repository';
+import { UpdateAccountDto } from './dto/update-account.dto';
+import { ChangePasswordDto } from '../users/dto/change-password.dto';
 
 @Injectable()
 export class AccountService {
-    constructor(private usersService: UsersService) {}
+    constructor(
+        @InjectRepository(UserRepository)
+        private userRepository: UserRepository,
+    ) {}
 
-    async updateAccount(user: User, updateUserDto: UpdateUserDto): Promise<User> {
-        // user role cannot be changed
-        if (updateUserDto.role) {
-            delete updateUserDto.role;
-        }
+    async updateAccount(user: User, updateAccountDto: UpdateAccountDto): Promise<User> {
+        return await this.userRepository.updateUser(user.id, updateAccountDto);
+    }
 
-        return await this.usersService.updateUser(user.id, updateUserDto);
+    async changeAccountPassword(user: User, changePasswordDto: ChangePasswordDto): Promise<void> {
+        return await this.userRepository.changePassword(user.id, changePasswordDto);
     }
 
     async deleteAccount(user: User): Promise<void> {
-        return await this.usersService.deleteUser(user.id);
+        return await this.userRepository.deleteUser(user.id);
     }
 }
