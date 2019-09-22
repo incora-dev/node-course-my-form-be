@@ -6,10 +6,12 @@ import {
     OneToMany,
     CreateDateColumn,
     UpdateDateColumn,
+    BeforeUpdate,
+    BeforeInsert,
 } from 'typeorm';
-import { UserRole } from './enums/user-role.enum';
-import { IsEnum } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { IsEnum } from 'class-validator';
+import { UserRole } from './enums/user-role.enum';
 import { Form } from '../forms/form.entity';
 
 @Entity('users')

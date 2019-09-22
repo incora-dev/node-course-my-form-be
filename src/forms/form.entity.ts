@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../users/user.entity';
 import { FormField } from './formFields/formField.entity';
+import { Feedback } from '../feedbacks/feedback.entity';
 
 @Entity('forms')
 export class Form extends BaseEntity {
@@ -30,6 +31,9 @@ export class Form extends BaseEntity {
 
     @OneToMany(type => FormField, formField => formField.form)
     fields: FormField[];
+
+    @OneToMany(type => Feedback, feedback => feedback.form)
+    feedbacks: Feedback[];
 
     @CreateDateColumn({ type: 'timestamp', select: false })
     createdAt: number;
