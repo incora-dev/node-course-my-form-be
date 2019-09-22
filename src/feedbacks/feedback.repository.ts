@@ -1,10 +1,20 @@
 import { Repository, EntityRepository } from 'typeorm';
-import { Logger } from '@nestjs/common';
+import { Logger, InternalServerErrorException } from '@nestjs/common';
 import { Feedback } from './feedback.entity';
+import { SaveFeedbackDto } from './dto/save-feedback.dto';
 
 @EntityRepository(Feedback)
 export class FeedbackRepository extends Repository<Feedback> {
     private logger = new Logger('FeedbackRepository');
 
-    // TODO
+    async createFeedback(saveFeedbackDto: SaveFeedbackDto) {
+        const feedback = await this.save(saveFeedbackDto);
+
+        if (!feedback) {
+            this.logger.error('Feedback not created: ' + saveFeedbackDto);
+            throw new InternalServerErrorException('Feedback not created.');
+        }
+
+        return feedback;
+    }
 }

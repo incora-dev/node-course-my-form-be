@@ -22,7 +22,7 @@ export class Feedback extends BaseEntity {
     @ManyToOne(type => Form, form => form.feedbacks, { nullable: false, onDelete: 'CASCADE' })
     form: Form;
 
-    @OneToMany(type => FeedbackField, feedbackField => feedbackField.formField)
+    @OneToMany(type => FeedbackField, feedbackField => feedbackField.feedback)
     fields: FeedbackField[];
 
     @CreateDateColumn({ type: 'timestamp', select: false })

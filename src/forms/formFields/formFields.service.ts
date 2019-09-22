@@ -3,20 +3,20 @@ import {
     BadRequestException,
     Logger,
     InternalServerErrorException,
+    NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FormFieldRepository } from './formField.repository';
-import { CreateFormFieldDto } from './dto/create-form-field.dto';
-import { FormField } from './formField.entity';
 import { Form } from '../form.entity';
+import { FormField } from './formField.entity';
+import { FormFieldRepository } from './formField.repository';
 import { FormFieldDto } from './dto/form-field.dto';
+import { SaveFormFieldDto } from './dto/save-form-field.dto';
 import { FieldTypesService } from '../fieldTypes/fieldTypes.service';
 import { FieldPatternsService } from '../fieldPatterns/fieldPatterns.service';
-import { SaveFormFieldDto } from './dto/save-form-field.dto';
 
 @Injectable()
-export class FormFieldService {
-    private logger = new Logger('FormFieldService');
+export class FormFieldsService {
+    private logger = new Logger('FormFieldsService');
 
     constructor(
         @InjectRepository(FormFieldRepository)
@@ -57,6 +57,16 @@ export class FormFieldService {
         if (!formField) {
             this.logger.error('Form field not created: ' + saveFormFieldDto);
             throw new InternalServerErrorException('Form field not created.');
+        }
+
+        return formField;
+    }
+
+    async getFormFieldById(id: number): Promise<FormField> {
+        const formField: FormField = await this.formFieldRepository.findOne({ id });
+
+        if (!formField) {
+            throw new NotFoundException(`Form field with ID "${id}" not found.`);
         }
 
         return formField;

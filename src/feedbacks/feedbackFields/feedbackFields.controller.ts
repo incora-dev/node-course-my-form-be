@@ -6,6 +6,4 @@ import { FeedbackFieldsService } from './feedbackFields.service';
 @UseGuards(AuthGuard('jwt'))
 export class FeedbackFieldsController {
     constructor(private feedbackFieldsService: FeedbackFieldsService) {}
-
-    // TODO
 }

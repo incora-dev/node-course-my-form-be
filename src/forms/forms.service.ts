@@ -11,7 +11,7 @@ import { FormRepository } from './form.repository';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
 import { SaveFormDto } from './dto/save-form.dto';
-import { FormFieldService } from './formFields/formFields.service';
+import { FormFieldsService } from './formFields/formFields.service';
 
 @Injectable()
 export class FormsService {
@@ -20,7 +20,7 @@ export class FormsService {
     constructor(
         @InjectRepository(FormRepository)
         private formRepository: FormRepository,
-        private formFieldService: FormFieldService,
+        private formFieldsService: FormFieldsService,
     ) {}
 
     async createForm(createFormDto: CreateFormDto, user: User): Promise<Form> {
@@ -30,7 +30,7 @@ export class FormsService {
         const form = await this.formRepository.createForm(createFormDto, user);
 
         // create form fields
-        const formFields = await this.formFieldService.createFormFields(formFieldsDto, form);
+        const formFields = await this.formFieldsService.createFormFields(formFieldsDto, form);
 
         // return form with all data
         return await this.formRepository.getFormByUser(form.id, user.id);
@@ -67,10 +67,10 @@ export class FormsService {
         // update form fields
         if (formFieldsDto) {
             // delete old fields
-            await this.formFieldService.deleteFormFields(form);
+            await this.formFieldsService.deleteFormFields(form);
 
             // create new fields
-            const formFields = await this.formFieldService.createFormFields(formFieldsDto, form);
+            const formFields = await this.formFieldsService.createFormFields(formFieldsDto, form);
         }
 
         if (!isFormUpdated) {

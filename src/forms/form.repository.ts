@@ -16,7 +16,7 @@ export class FormRepository extends Repository<Form> {
             formCode: this.generateFormCode(),
         };
 
-        const form = await this.save(saveFormDto);
+        const form: Form = await this.save(saveFormDto);
 
         if (!form) {
             this.logger.error('Form not created: ' + saveFormDto);
@@ -27,22 +27,29 @@ export class FormRepository extends Repository<Form> {
     }
 
     async getFormByUser(formId: number, userId: number, fullData: boolean = true): Promise<Form> {
-        let form: Form;
+        const queryParams: any = {
+            where: { owner: userId },
+        };
 
         // get form with full data
         if (fullData) {
-            form = await this.findOne(formId, {
-                relations: ['fields', 'fields.pattern', 'fields.fieldType'],
-                where: { owner: userId },
-            });
-        } else {
-            form = await this.findOne(formId, {
-                where: { owner: userId },
-            });
+            queryParams.relations = ['fields', 'fields.pattern', 'fields.fieldType'];
         }
+
+        const form: Form = await this.findOne(formId, queryParams);
 
         if (!form) {
             throw new NotFoundException(`Form with ID "${formId}" not found.`);
+        }
+
+        return form;
+    }
+
+    async getFormById(id: number): Promise<Form> {
+        const form: Form = await this.findOne({ id });
+
+        if (!form) {
+            throw new NotFoundException(`Form with ID "${id}" not found.`);
         }
 
         return form;

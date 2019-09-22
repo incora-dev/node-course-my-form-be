@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FormFieldService } from './formFields.service';
+import { FormFieldsService } from './formFields.service';
 import { FormFieldRepository } from './formField.repository';
 import { FieldTypesModule } from '../fieldTypes/fieldTypes.module';
 import { FieldPatternsModule } from '../fieldPatterns/fieldPatterns.module';
@@ -11,7 +11,7 @@ import { FieldPatternsModule } from '../fieldPatterns/fieldPatterns.module';
         FieldTypesModule,
         FieldPatternsModule,
     ],
-    providers: [FormFieldService],
-    exports: [FormFieldService],
+    providers: [FormFieldsService],
+    exports: [FormFieldsService],
 })
 export class FormFieldsModule {}
