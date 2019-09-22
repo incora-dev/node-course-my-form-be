@@ -1,13 +1,15 @@
 import {
     Column,
     Entity,
-    ManyToOne,
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
     BaseEntity,
+    ManyToOne,
+    OneToMany,
 } from 'typeorm';
 import { Form } from '../forms/form.entity';
+import { FeedbackField } from './feedbackFields/feedbackField.entity';
 
 @Entity('feedbacks')
 export class Feedback extends BaseEntity {
@@ -19,6 +21,9 @@ export class Feedback extends BaseEntity {
 
     @ManyToOne(type => Form, form => form.feedbacks, { nullable: false, onDelete: 'CASCADE' })
     form: Form;
+
+    @OneToMany(type => FeedbackField, feedbackField => feedbackField.formField)
+    fields: FeedbackField[];
 
     @CreateDateColumn({ type: 'timestamp', select: false })
     createdAt: number;
