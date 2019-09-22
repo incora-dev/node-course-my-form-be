@@ -8,6 +8,7 @@ import { IdDto } from '../common/dto/id.dto';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
 import { GetUser } from '../users/decorators/get-user-decorator';
+import { FormFeedbackParamDto } from './dto/form-feedback-param.dto';
 
 @Controller('forms')
 @UseGuards(AuthGuard('jwt'))
@@ -46,5 +47,13 @@ export class FormsController {
     @Get(':id/feedbacks')
     async getFormFeedbacks(@Param() params: IdDto, @GetUser() user: User): Promise<Feedback[]> {
         return await this.formsService.getFormFeedbacks(params.id, user);
+    }
+
+    @Get(':id/feedbacks/:feedbackId')
+    async getFormFeedbackById(
+        @Param() params: FormFeedbackParamDto,
+        @GetUser() user: User,
+    ): Promise<Feedback> {
+        return await this.formsService.getFormFeedbackById(params.id, params.feedbackId, user);
     }
 }

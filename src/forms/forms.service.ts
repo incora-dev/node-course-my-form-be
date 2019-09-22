@@ -8,10 +8,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Form } from './form.entity';
 import { User } from '../users/user.entity';
 import { Feedback } from '../feedbacks/feedback.entity';
-import { FormRepository } from './form.repository';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
 import { SaveFormDto } from './dto/save-form.dto';
+import { FormRepository } from './form.repository';
+import { FeedbackRepository } from '../feedbacks/feedback.repository';
 import { FormFieldsService } from './formFields/formFields.service';
 
 @Injectable()
@@ -21,6 +22,10 @@ export class FormsService {
     constructor(
         @InjectRepository(FormRepository)
         private formRepository: FormRepository,
+
+        @InjectRepository(FeedbackRepository)
+        private feedbackRepository: FeedbackRepository,
+
         private formFieldsService: FormFieldsService,
     ) {}
 
@@ -101,5 +106,29 @@ export class FormsService {
         }
 
         return form.feedbacks;
+    }
+
+    async getFormFeedbackById(formId: number, feedbackId: number, user: User): Promise<Feedback> {
+        // get feedback with all relations
+        const formFeedback = await this.feedbackRepository
+            .createQueryBuilder()
+            .select('feedback')
+            .from(Feedback, 'feedback')
+            .leftJoinAndSelect('feedback.fields', 'fields')
+            .leftJoinAndSelect('fields.formField', 'formField')
+            .leftJoinAndSelect('formField.fieldType', 'fieldType')
+            .leftJoinAndSelect('formField.pattern', 'pattern')
+            .innerJoin('feedback.form', 'form')
+            .innerJoin('form.owner', 'owner')
+            .where('feedback.form = :formId', { formId })
+            .andWhere('feedback.id = :feedbackId', { feedbackId })
+            .andWhere('owner.id = :userId', { userId: user.id })
+            .getOne();
+
+        if (!formFeedback) {
+            throw new NotFoundException(`Feedback with ID "${feedbackId}" not found.`);
+        }
+
+        return formFeedback;
     }
 }
