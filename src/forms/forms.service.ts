@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Form } from './form.entity';
 import { User } from '../users/user.entity';
+import { Feedback } from '../feedbacks/feedback.entity';
 import { FormRepository } from './form.repository';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
@@ -87,5 +88,18 @@ export class FormsService {
         if (result.affected === 0) {
             throw new NotFoundException(`Form with ID "${formId}" not found.`);
         }
+    }
+
+    async getFormFeedbacks(formId: number, user: User): Promise<Feedback[]> {
+        const form: Form = await this.formRepository.findOne(formId, {
+            where: { owner: user.id },
+            relations: ['feedbacks'],
+        });
+
+        if (!form) {
+            throw new NotFoundException(`Form with ID "${formId}" not found.`);
+        }
+
+        return form.feedbacks;
     }
 }

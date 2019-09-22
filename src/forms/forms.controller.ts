@@ -2,11 +2,12 @@ import { Controller, Post, Get, Put, Delete, Param, UseGuards, Body } from '@nes
 import { AuthGuard } from '@nestjs/passport';
 import { Form } from './form.entity';
 import { User } from '../users/user.entity';
-import { GetUser } from '../users/decorators/get-user-decorator';
+import { Feedback } from '../feedbacks/feedback.entity';
 import { FormsService } from './forms.service';
+import { IdDto } from '../common/dto/id.dto';
 import { CreateFormDto } from './dto/create-form.dto';
 import { UpdateFormDto } from './dto/update-form.dto';
-import { IdDto } from '../common/dto/id.dto';
+import { GetUser } from '../users/decorators/get-user-decorator';
 
 @Controller('forms')
 @UseGuards(AuthGuard('jwt'))
@@ -40,5 +41,10 @@ export class FormsController {
     @Delete('/:id')
     async deleteForm(@Param() params: IdDto, @GetUser() user: User): Promise<void> {
         return await this.formsService.deleteForm(params.id, user);
+    }
+
+    @Get(':id/feedbacks')
+    async getFormFeedbacks(@Param() params: IdDto, @GetUser() user: User): Promise<Feedback[]> {
+        return await this.formsService.getFormFeedbacks(params.id, user);
     }
 }
