@@ -9,5 +9,5 @@ export const filesConfig = {
         // spreadsheet: ['ods', 'xls', 'xlsx'],
     },
     maxSizeUpload: 10485760, // 10 MB
-    // maxFilesNumb: 5,
+    maxFilesNumb: 5,
 };

@@ -16,4 +16,12 @@ export class FilesService {
     async createFile(fileDto: FileDto): Promise<File> {
         return this.fileRepository.createFile(fileDto);
     }
+
+    async createFiles(filesDto: FileDto[]): Promise<File[]> {
+        return await Promise.all(
+            filesDto.map(async fileDto => {
+                return this.fileRepository.createFile(fileDto);
+            }),
+        );
+    }
 }

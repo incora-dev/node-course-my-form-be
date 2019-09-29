@@ -44,6 +44,7 @@ import { filesConfig } from '../config/files.config';
                 },
                 limits: {
                     fileSize: filesConfig.maxSizeUpload,
+                    files: filesConfig.maxFilesNumb,
                 },
             }),
         }),
