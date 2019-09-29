@@ -3,6 +3,7 @@ import {
     Param,
     Post,
     Get,
+    Delete,
     UseInterceptors,
     UploadedFile,
     UploadedFiles,
@@ -44,5 +45,10 @@ export class FilesController {
     @Get('file/:id')
     async getUploadedFile(@Param() params: IdDto): Promise<File> {
         return await this.filesService.findFileById(params.id);
+    }
+
+    @Delete('file/:id')
+    async deleteUploadedFile(@Param() params: IdDto): Promise<void> {
+        return await this.filesService.deleteFile(params.id);
     }
 }

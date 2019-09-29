@@ -1,5 +1,6 @@
+import * as fs from 'fs';
 import { Repository, EntityRepository } from 'typeorm';
-import { Logger, InternalServerErrorException } from '@nestjs/common';
+import { Logger, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { File } from './file.entity';
 import { FileDto } from './dto/file.dto';
 
@@ -16,5 +17,25 @@ export class FileRepository extends Repository<File> {
         }
 
         return file;
+    }
+
+    async deleteFile(fileId: number): Promise<void> {
+        const file = await this.findOne({ id: fileId });
+
+        if (!file) {
+            throw new NotFoundException(`File with ID "${fileId}" not found.`);
+        }
+
+        // delete file from database
+        const deletedResult = await this.delete({ id: file.id });
+
+        if (deletedResult.affected === 0) {
+            throw new InternalServerErrorException(`File with ID "${fileId}" not deleted.`);
+        }
+
+        // delete file from uploads directory
+        if (fs.existsSync(file.path)) {
+            fs.unlinkSync(file.path);
+        }
     }
 }
