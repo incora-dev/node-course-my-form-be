@@ -38,4 +38,14 @@ export class FeedbacksController {
             user,
         );
     }
+
+    @Delete('/:feedbackId')
+    @UseGuards(AuthGuard('jwt'))
+    async deleteFormFeedback(@Param() params: FeedbackIdDto, @GetUser() user: User): Promise<void> {
+        return await this.feedbacksService.deleteFormFeedback(
+            params.formId,
+            params.feedbackId,
+            user,
+        );
+    }
 }

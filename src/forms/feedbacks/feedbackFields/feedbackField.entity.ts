@@ -6,8 +6,11 @@ import {
     UpdateDateColumn,
     BaseEntity,
     ManyToOne,
+    ManyToMany,
+    JoinTable,
 } from 'typeorm';
 import { Feedback } from '../feedback.entity';
+import { File } from '../../../files/file.entity';
 import { FormField } from '../../formFields/formField.entity';
 
 @Entity('feedback_fields')
@@ -26,9 +29,16 @@ export class FeedbackField extends BaseEntity {
 
     @ManyToOne(type => FormField, formField => formField.feedbackFields, {
         nullable: false,
-        onDelete: 'CASCADE',
     })
     formField: FormField;
+
+    @ManyToMany(() => File, file => file.feedbackFields)
+    @JoinTable({
+        name: 'feedback_fields_files',
+        joinColumn: { name: 'feedbackFieldId' },
+        inverseJoinColumn: { name: 'fileId' },
+    })
+    files: File[];
 
     @CreateDateColumn({ type: 'timestamp', select: false })
     createdAt: number;

@@ -61,4 +61,27 @@ export class FeedbackRepository extends Repository<Feedback> {
 
         return formFeedback;
     }
+
+    async deleteFormFeedback(formId: number, feedbackId: number, user: User): Promise<void> {
+        // get feedback
+        const formFeedback = await this.createQueryBuilder()
+            .select('feedback')
+            .from(Feedback, 'feedback')
+            .innerJoin('feedback.form', 'form')
+            .innerJoin('form.owner', 'owner')
+            .where('feedback.form = :formId', { formId })
+            .andWhere('feedback.id = :feedbackId', { feedbackId })
+            .andWhere('owner.id = :userId', { userId: user.id })
+            .getOne();
+
+        if (!formFeedback) {
+            throw new NotFoundException(`Feedback with ID "${feedbackId}" not found.`);
+        }
+
+        const deletedResult = await this.remove(formFeedback);
+
+        if (!deletedResult) {
+            throw new InternalServerErrorException(`Feedback with ID "${feedbackId}" not deleted.`);
+        }
+    }
 }

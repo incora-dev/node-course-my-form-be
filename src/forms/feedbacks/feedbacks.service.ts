@@ -66,4 +66,8 @@ export class FeedbacksService {
 
         return feedback;
     }
+
+    async deleteFormFeedback(formId: number, feedbackId: number, user: User): Promise<void> {
+        return await this.feedbackRepository.deleteFormFeedback(formId, feedbackId, user);
+    }
 }
