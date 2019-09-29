@@ -42,7 +42,7 @@ export class FormFieldsService {
         );
 
         if (!fieldType || !fieldPattern) {
-            throw new BadRequestException();
+            throw new BadRequestException('Invalid parameters.');
         }
 
         const saveFormFieldDto: SaveFormFieldDto = {

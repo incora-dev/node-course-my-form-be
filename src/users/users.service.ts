@@ -22,7 +22,7 @@ export class UsersService {
 
     async getUserByParams(params: GetUserDto): Promise<User> {
         if (!Object.keys(params).length) {
-            throw new BadRequestException();
+            throw new BadRequestException('Invalid parameters.');
         }
 
         const user = await this.userRepository.findOne(params);
