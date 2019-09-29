@@ -2,9 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Feedback } from '../feedback.entity';
 import { FeedbackField } from './feedbackField.entity';
-import { FormField } from '../../forms/formFields/formField.entity';
+import { FormField } from '../../formFields/formField.entity';
 import { FeedbackFieldRepository } from './feedbackField.repository';
-import { FormFieldsService } from '../../forms/formFields/formFields.service';
+import { FormFieldsService } from '../../formFields/formFields.service';
 import { CreateFeedbackFieldDto } from './dto/create-feedback-field.dto';
 import { SaveFeedbackFieldDto } from './dto/save-feedback-field.dto';
 

@@ -1,13 +1,14 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Form } from '../forms/form.entity';
+import { Form } from '../form.entity';
 import { Feedback } from './feedback.entity';
-import { FormRepository } from '../forms/form.repository';
+import { User } from '../../users/user.entity';
+import { FormRepository } from '../form.repository';
 import { FeedbackRepository } from './feedback.repository';
-import { FeedbackFieldsService } from './feedbackFields/feedbackFields.service';
 import { SaveFeedbackDto } from './dto/save-feedback.dto';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { CreateFeedbackFieldDto } from './feedbackFields/dto/create-feedback-field.dto';
+import { FeedbackFieldsService } from './feedbackFields/feedbackFields.service';
 
 @Injectable()
 export class FeedbacksService {
@@ -23,10 +24,10 @@ export class FeedbacksService {
         private feedbackFieldsService: FeedbackFieldsService,
     ) {}
 
-    async createFeedback(createFeedbackDto: CreateFeedbackDto): Promise<Feedback> {
+    async createFormFeedback(formId, createFeedbackDto: CreateFeedbackDto): Promise<Feedback> {
         const createFeedbackFieldDto: CreateFeedbackFieldDto[] = createFeedbackDto.fields;
 
-        const form: Form = await this.formRepository.getFormById(createFeedbackDto.formId);
+        const form: Form = await this.formRepository.getFormById(formId);
 
         const saveFeedbackDto: SaveFeedbackDto = {
             domainUrl: createFeedbackDto.domainUrl,
@@ -40,22 +41,28 @@ export class FeedbacksService {
             feedback,
         );
 
-        return await this.getFeedbackById(feedback.id);
+        return await this.feedbackRepository.getFeedbackById(feedback.id);
     }
 
-    async getFeedbackById(id: number, fullData: boolean = true): Promise<Feedback> {
-        const queryParams: any = {};
+    async getFormFeedbacks(formId: number, user: User): Promise<Feedback[]> {
+        const form: Form = await this.formRepository.findOne(formId, {
+            where: { owner: user.id },
+            relations: ['feedbacks'],
+        });
 
-        // get feedback with full data
-        if (fullData) {
-            queryParams.relations = ['fields', 'fields.formField'];
+        if (!form) {
+            throw new NotFoundException(`Form with ID "${formId}" not found.`);
         }
 
-        const feedback: Feedback = await this.feedbackRepository.findOne(id, queryParams);
+        return form.feedbacks;
+    }
 
-        if (!feedback) {
-            throw new NotFoundException(`Feedback with ID "${id}" not found.`);
-        }
+    async getFormFeedbackById(formId: number, feedbackId: number, user: User): Promise<Feedback> {
+        const feedback: Feedback = await this.feedbackRepository.getFormFeedbackById(
+            formId,
+            feedbackId,
+            user,
+        );
 
         return feedback;
     }

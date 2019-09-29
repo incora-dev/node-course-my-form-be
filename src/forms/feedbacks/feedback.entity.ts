@@ -8,7 +8,7 @@ import {
     ManyToOne,
     OneToMany,
 } from 'typeorm';
-import { Form } from '../forms/form.entity';
+import { Form } from '../form.entity';
 import { FeedbackField } from './feedbackFields/feedbackField.entity';
 
 @Entity('feedbacks')

@@ -1,5 +1,5 @@
 import { IsJSON, IsNotEmpty } from 'class-validator';
-import { FormField } from '../../../forms/formFields/formField.entity';
+import { FormField } from '../../../formFields/formField.entity';
 import { Feedback } from '../../feedback.entity';
 
 export class SaveFeedbackFieldDto {

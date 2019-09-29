@@ -11,7 +11,7 @@ import {
 import { Form } from '../form.entity';
 import { FieldType } from '../fieldTypes/fieldType.entity';
 import { FieldPattern } from '../fieldPatterns/fieldPattern.entity';
-import { FeedbackField } from '../../feedbacks/feedbackFields/feedbackField.entity';
+import { FeedbackField } from '../feedbacks/feedbackFields/feedbackField.entity';
 
 @Entity('form_fields')
 export class FormField extends BaseEntity {

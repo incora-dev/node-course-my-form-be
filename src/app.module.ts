@@ -5,7 +5,6 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AccountModule } from './account/account.module';
 import { FormsModule } from './forms/forms.module';
-import { FeedbacksModule } from './feedbacks/feedbacks.module';
 import { FilesModule } from './files/files.module';
 
 @Module({
@@ -15,7 +14,6 @@ import { FilesModule } from './files/files.module';
         UsersModule,
         AccountModule,
         FormsModule,
-        FeedbacksModule,
         FilesModule,
     ],
 })

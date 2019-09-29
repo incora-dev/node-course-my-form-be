@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../users/user.entity';
 import { FormField } from './formFields/formField.entity';
-import { Feedback } from '../feedbacks/feedback.entity';
+import { Feedback } from './feedbacks/feedback.entity';
 
 @Entity('forms')
 export class Form extends BaseEntity {

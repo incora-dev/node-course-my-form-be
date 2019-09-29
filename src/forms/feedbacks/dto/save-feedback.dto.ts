@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { Form } from '../../forms/form.entity';
+import { Form } from '../../form.entity';
 
 export class SaveFeedbackDto {
     @IsString()

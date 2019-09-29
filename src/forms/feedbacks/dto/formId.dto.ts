@@ -1,12 +1,8 @@
 import { IsNumberString } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
-export class FormFeedbackParamDto {
+export class FormIdDto {
     @ApiModelProperty()
     @IsNumberString()
-    id: number;
-
-    @ApiModelProperty()
-    @IsNumberString()
-    feedbackId: number;
+    formId: number;
 }

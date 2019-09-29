@@ -5,9 +5,6 @@ export class CreateFeedbackDto {
     @IsString()
     domainUrl: string;
 
-    @IsInt()
-    formId: number;
-
     @IsArray()
     fields: CreateFeedbackFieldDto[];
 }
