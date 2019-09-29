@@ -1,6 +1,8 @@
 import {
     Controller,
+    Param,
     Post,
+    Get,
     UseInterceptors,
     UploadedFile,
     UploadedFiles,
@@ -8,10 +10,11 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { FilesService } from './files.service';
-import { FileDto } from './dto/file.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { File } from './file.entity';
+import { FileDto } from './dto/file.dto';
+import { IdDto } from '../common/dto/id.dto';
+import { FilesService } from './files.service';
 
 @Controller('upload')
 @UseGuards(AuthGuard('jwt'))
@@ -36,5 +39,10 @@ export class FilesController {
         }
 
         return await this.filesService.createFiles(files);
+    }
+
+    @Get('file/:id')
+    async getUploadedFile(@Param() params: IdDto): Promise<File> {
+        return await this.filesService.findFileById(params.id);
     }
 }
