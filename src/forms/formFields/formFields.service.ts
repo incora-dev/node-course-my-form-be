@@ -37,11 +37,15 @@ export class FormFieldsService {
 
     async createFormField(formFieldDto: FormFieldDto, form: Form): Promise<FormField> {
         const fieldType = await this.fieldTypesService.getFieldTypeByParams(formFieldDto.fieldType);
-        const fieldPattern = await this.fieldPatternsService.getFieldPatternByParams(
-            formFieldDto.pattern,
-        );
 
-        if (!fieldType || !fieldPattern) {
+        let fieldPattern = null;
+        if (formFieldDto.pattern) {
+            fieldPattern = await this.fieldPatternsService.getFieldPatternById(
+                formFieldDto.pattern,
+            );
+        }
+
+        if (!fieldType) {
             throw new BadRequestException('Invalid parameters.');
         }
 

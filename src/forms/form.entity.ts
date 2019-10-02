@@ -35,9 +35,9 @@ export class Form extends BaseEntity {
     @OneToMany(type => Feedback, feedback => feedback.form)
     feedbacks: Feedback[];
 
-    @CreateDateColumn({ type: 'timestamp', select: false })
+    @CreateDateColumn({ type: 'timestamp' })
     createdAt: number;
 
-    @UpdateDateColumn({ type: 'timestamp', select: false })
+    @UpdateDateColumn({ type: 'timestamp' })
     updatedAt: number;
 }

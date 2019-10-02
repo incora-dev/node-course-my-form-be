@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FieldPatternRepository } from './fieldPattern.repository';
 import { FieldPattern } from './fieldPattern.entity';
@@ -10,8 +10,8 @@ export class FieldPatternsService {
         private readonly fieldPatternRepository: FieldPatternRepository,
     ) {}
 
-    async getFieldPatternByParams(params): Promise<FieldPattern> {
-        const fieldPattern = await this.fieldPatternRepository.findOne(params);
+    async getFieldPatternById(patternId: number): Promise<FieldPattern> {
+        const fieldPattern = await this.fieldPatternRepository.findOne(patternId);
 
         if (!fieldPattern) {
             throw new NotFoundException('Field pattern not found.');
