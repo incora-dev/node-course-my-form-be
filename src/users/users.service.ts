@@ -57,6 +57,10 @@ export class UsersService {
             .where('user.email = :email', { email })
             .getOne();
 
+        if (!user) {
+            return null;
+        }
+
         const isSame = await this.userRepository.comparePasswords(password, user.password);
 
         if (user && isSame) {

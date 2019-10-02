@@ -21,7 +21,7 @@ export class FormField extends BaseEntity {
     @Column({ type: 'varchar', nullable: true })
     placeholder: string;
 
-    @ManyToOne(type => FieldPattern, fieldPattern => fieldPattern.fields, { nullable: false })
+    @ManyToOne(type => FieldPattern, fieldPattern => fieldPattern.fields)
     pattern: FieldPattern;
 
     @ManyToOne(type => Form, form => form.fields, { onDelete: 'CASCADE' })
