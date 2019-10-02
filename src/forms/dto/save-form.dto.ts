@@ -1,10 +1,11 @@
 import { FormDto } from './form.dto';
 import { User } from '../../users/user.entity';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class SaveFormDto extends FormDto {
+    @IsOptional()
     @IsString()
-    formCode: string;
+    formCode?: string;
 
     @IsNotEmpty()
     owner: User;

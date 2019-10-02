@@ -19,6 +19,12 @@ export class FormField extends BaseEntity {
     id: number;
 
     @Column({ type: 'varchar', nullable: true })
+    name: string;
+
+    @Column({ type: 'boolean', nullable: true })
+    required: boolean;
+
+    @Column({ type: 'varchar', nullable: true })
     placeholder: string;
 
     @ManyToOne(type => FieldPattern, fieldPattern => fieldPattern.fields)

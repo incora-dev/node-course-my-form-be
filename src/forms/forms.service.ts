@@ -59,7 +59,6 @@ export class FormsService {
         const saveFormDto: SaveFormDto = {
             ...updateFormDto,
             owner: user,
-            formCode: this.formRepository.generateFormCode(),
         };
 
         // update form info

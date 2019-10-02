@@ -50,6 +50,8 @@ export class FormFieldsService {
         }
 
         const saveFormFieldDto: SaveFormFieldDto = {
+            name: formFieldDto.name,
+            required: formFieldDto.required,
             placeholder: formFieldDto.placeholder,
             pattern: fieldPattern,
             fieldType,

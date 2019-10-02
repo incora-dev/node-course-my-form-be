@@ -1,3 +1,4 @@
+import * as uuidv4 from 'uuid/v4';
 import { Repository, EntityRepository } from 'typeorm';
 import { NotFoundException, Logger, InternalServerErrorException } from '@nestjs/common';
 import { User } from '../users/user.entity';
@@ -56,6 +57,6 @@ export class FormRepository extends Repository<Form> {
     }
 
     generateFormCode(): string {
-        return '<iframe></iframe>';
+        return uuidv4();
     }
 }
